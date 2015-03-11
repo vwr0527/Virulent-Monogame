@@ -1,0 +1,27 @@
+﻿current mess we're in: State needs to die.
+I will move every state object into their respective entities. Player is no longer a state, it needs to be an entity.
+
+Though this creates the problem that each type of entity will need it's own list.
+The solution is that entity needs to be a single type. No child classes. It has to be configureable enough to become any entity.
+Another solution: Break up "state" into logical sub-chunks, but keep the same general idea (entity component)
+
+after level load, it loads all the blocks of that level into worldmanager
+
+collisionmanager needs to 'add to collision list' rather than eliminate.
+
+RecycleArray = bad. make sure you have confidence in it first.
+
+
+State should be replaced with:
+	Each entity type is a child class of Entity. They contain all their own data and methods.
+	EntityManager should contain separate lists for each type of entity.
+	Loading any entity type to a level should require that you create an empty list for that entity type first.
+
+
+Recursive sprites?? Managed by EntityManager?? What was I thinking?
+can I move spriteList from entityManager to graphicsManager?
+so I have a spritelist in the graphics manager, and a separate spritelist in the entityManager. Why two?
+
+Should each Manager entity get a copy of the other manager it interacts with, to internally store?
+
+Why do levels contain state initialization and entity creation code?

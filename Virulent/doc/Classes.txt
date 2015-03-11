@@ -1,0 +1,27 @@
+﻿First version:
+Virulent is the game manager.
+Virulent contains
+InputManager, StorageManager, ResourceManager,
+GraphicsManager, AudioManager, WorldManager and MenuManager
+
+World and Menu will read input from InputManager, send draw commands
+to graphics manager, send audio requests to audiomanager, and send save
+and load requests to storagemanager.
+Audio and Graphics Managers will request necessary resources from resource
+manager.
+
+ResourceManager must be told which resources to load.
+WorldManager will tell it, every time it loads a level.
+
+Graphics class will be responsible for drawing things.
+World class will be responsible for loading the level, simulating the world.
+Menu class will be the menu.
+
+Menu and World will send draw commands to the Graphics Class.
+
+Menu will have Pages
+	Pages will have Selections
+
+
+Graphics will have GraphicElements
+	

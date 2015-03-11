@@ -1,0 +1,49 @@
+﻿<Properties StartupItem="Virulent.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Graphics\SpriteElement.cs">
+    <Files>
+      <File FileName="Program.cs" Line="1" Column="1" />
+      <File FileName="VirulentGame.cs" Line="1" Column="1" />
+      <File FileName="Cinematic\CinematicManager.cs" Line="1" Column="1" />
+      <File FileName="Graphics\Camera.cs" Line="1" Column="1" />
+      <File FileName="Menu\MainMenu.cs" Line="1" Column="1" />
+      <File FileName="Menu\MenuManager.cs" Line="1" Column="1" />
+      <File FileName="Menu\MenuPage.cs" Line="1" Column="1" />
+      <File FileName="Menu\StartGamePage.cs" Line="1" Column="1" />
+      <File FileName="Menu\TitleMenu.cs" Line="1" Column="1" />
+      <File FileName="Input\InputManager.cs" Line="1" Column="1" />
+      <File FileName="Graphics\SpriteElement.cs" Line="1" Column="1" />
+      <File FileName="Graphics\PolyManager.cs" Line="1" Column="1" />
+      <File FileName="Graphics\GraphicsManager.cs" Line="1" Column="1" />
+      <File FileName="Graphics\GraphicElement.cs" Line="1" Column="1" />
+      <File FileName="Storage\StorageManager.cs" Line="1" Column="1" />
+      <File FileName="util\Cell.cs" Line="1" Column="1" />
+      <File FileName="util\RecycleArray.cs" Line="1" Column="1" />
+      <File FileName="World\WorldManager.cs" Line="1" Column="1" />
+      <File FileName="World\EntityManager.cs" Line="1" Column="1" />
+      <File FileName="World\Entity.cs" Line="1" Column="1" />
+      <File FileName="World\BlockManager.cs" Line="1" Column="1" />
+      <File FileName="World\Block.cs" Line="1" Column="1" />
+      <File FileName="World\States\State.cs" Line="1" Column="1" />
+      <File FileName="World\States\Player.cs" Line="1" Column="1" />
+      <File FileName="World\States\Particle.cs" Line="1" Column="1" />
+      <File FileName="World\States\GearDisk.cs" Line="1" Column="1" />
+      <File FileName="World\States\Ball.cs" Line="1" Column="1" />
+      <File FileName="World\States\Animations\Animator.cs" Line="1" Column="1" />
+      <File FileName="World\Levels\TutorialLevel.cs" Line="1" Column="1" />
+      <File FileName="World\Levels\TitleLevel.cs" Line="1" Column="1" />
+      <File FileName="World\Levels\Level.cs" Line="1" Column="1" />
+      <File FileName="World\States\Animations\Pose.cs" Line="1" Column="1" />
+      <File FileName="World\Collision\SquareManager.cs" Line="1" Column="1" />
+      <File FileName="World\Collision\Square.cs" Line="1" Column="1" />
+      <File FileName="World\Collision\EntitySquares.cs" Line="1" Column="1" />
+      <File FileName="World\Collision\EntityCollisionInfo.cs" Line="1" Column="1" />
+      <File FileName="World\Collision\CollisionManager.cs" Line="1" Column="1" />
+      <File FileName="World\Collision\Collider.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

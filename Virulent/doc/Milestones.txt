@@ -1,0 +1,17 @@
+﻿Milestone 1: Render text, texture and geometry on the screen
+
+Subgoal1: Render text - complete
+Subgoal2: Render texture - complete
+Subgoal3: Render geometry - complete
+
+move text rendering code to guiman - done
+move geometry rendering code to worldman
+
+Milestone 2: Simple 1 page menu system, simple in game physics (bouncy ball)
+
+Sub1: Menu system (page class, button class, pageinfo class)
+Sub2: Game with fixed spawning, fixed entity array, one entity, fixed update loop
+
+Milestone 3: Multipage menu, adjustable settings, basic sound
+Milestone 4: Finite item spawner, controllable item
+Milestone 5: Simple camera motion

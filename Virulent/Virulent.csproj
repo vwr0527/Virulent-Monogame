@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{D0C805A3-73B8-4894-A800-D23E21A18420}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Virulent</RootNamespace>
+    <AssemblyName>Virulent</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\MonoGame.Binaries.3.2.0\build\net40\MonoGame.Binaries.targets" Condition="Exists('..\packages\MonoGame.Binaries.3.2.0\build\net40\MonoGame.Binaries.targets')" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.ContentPipeline.targets" />
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="SDL.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="VirulentGame.cs" />
+    <Compile Include="Cinematic\CinematicManager.cs" />
+    <Compile Include="Graphics\Camera.cs" />
+    <Compile Include="Graphics\GraphicElement.cs" />
+    <Compile Include="Graphics\GraphicsManager.cs" />
+    <Compile Include="Graphics\PolyManager.cs" />
+    <Compile Include="Graphics\SpriteElement.cs" />
+    <Compile Include="Input\InputManager.cs" />
+    <Compile Include="Menu\MainMenu.cs" />
+    <Compile Include="Menu\MenuManager.cs" />
+    <Compile Include="Menu\MenuPage.cs" />
+    <Compile Include="Menu\StartGamePage.cs" />
+    <Compile Include="Menu\TitleMenu.cs" />
+    <Compile Include="Storage\StorageManager.cs" />
+    <Compile Include="util\Cell.cs" />
+    <Compile Include="util\RecycleArray.cs" />
+    <Compile Include="World\Block.cs" />
+    <Compile Include="World\BlockManager.cs" />
+    <Compile Include="World\Entity.cs" />
+    <Compile Include="World\EntityManager.cs" />
+    <Compile Include="World\WorldManager.cs" />
+    <Compile Include="World\Collision\Collider.cs" />
+    <Compile Include="World\Collision\CollisionManager.cs" />
+    <Compile Include="World\Collision\EntityCollisionInfo.cs" />
+    <Compile Include="World\Collision\EntitySquares.cs" />
+    <Compile Include="World\Collision\Square.cs" />
+    <Compile Include="World\Collision\SquareManager.cs" />
+    <Compile Include="World\Levels\Level.cs" />
+    <Compile Include="World\Levels\TitleLevel.cs" />
+    <Compile Include="World\Levels\TutorialLevel.cs" />
+    <Compile Include="World\States\Ball.cs" />
+    <Compile Include="World\States\GearDisk.cs" />
+    <Compile Include="World\States\Particle.cs" />
+    <Compile Include="World\States\Player.cs" />
+    <Compile Include="World\States\State.cs" />
+    <Compile Include="World\States\Animations\Animator.cs" />
+    <Compile Include="World\States\Animations\Pose.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Cinematic\" />
+    <Folder Include="Graphics\" />
+    <Folder Include="Input\" />
+    <Folder Include="Menu\" />
+    <Folder Include="Storage\" />
+    <Folder Include="util\" />
+    <Folder Include="World\" />
+    <Folder Include="bin\" />
+  </ItemGroup>
+</Project>
