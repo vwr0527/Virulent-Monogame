@@ -54,7 +54,7 @@ namespace Virulent.World.Levels
             brick[2].SetColor(new Color(1.0f, 0.1f, 1.0f));
 
             bg = new SpriteElement(content.Load<Texture2D>("gradient"));
-            bg.scale = 5;
+            bg.Scale = 5;
             bg.pos.X = 0.5f;
             bg.pos.Y = 0.5f;
 

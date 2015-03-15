@@ -60,18 +60,18 @@ namespace Virulent.World.States.Animations
             if (editor_pose_loaded && !editor_part_selected)
             {
                 drawPoseBox(graphMan, Color.Green);
-                drawPartBox(graphMan, Color.Purple, new Vector2(selectedPart.x, selectedPart.y));
+				drawPartBox(graphMan, Color.Purple, new Vector2(selectedPart.pos.X, selectedPart.pos.Y));
             }
             if (editor_pose_loaded && editor_part_selected && !editor_option_selected)
             {
                 drawPoseBox(graphMan, new Color(0,0.2f,0));
                 Color col = Color.Blue;
-                drawPartBox(graphMan, new Vector2(selectedPart.x, selectedPart.y));
+				drawPartBox(graphMan, new Vector2(selectedPart.pos.X, selectedPart.pos.Y));
             }
             if (editor_pose_loaded && editor_part_selected && editor_option_selected)
             {
                 drawPoseBox(graphMan, Color.DarkBlue);
-                drawPartBox(graphMan, new Vector2(selectedPart.x, selectedPart.y));
+				drawPartBox(graphMan, new Vector2(selectedPart.pos.X, selectedPart.pos.Y));
             }
         }
 
@@ -201,22 +201,22 @@ namespace Virulent.World.States.Animations
                     case 0:
                     if (input.IsLeftPressed())
                     {
-                        selectedPart.x -= editor_option_adjust_speed;
+                        selectedPart.pos.X -= editor_option_adjust_speed;
                         editor_option_adjust_speed += 0.1f;
                     }
                     if (input.IsRightPressed())
                     {
-                        selectedPart.x += editor_option_adjust_speed;
+						selectedPart.pos.X += editor_option_adjust_speed;
                         editor_option_adjust_speed += 0.1f;
                     }
                     if (input.IsDownPressed())
                     {
-                        selectedPart.y += editor_option_adjust_speed;
+						selectedPart.pos.Y += editor_option_adjust_speed;
                         editor_option_adjust_speed += 0.1f;
                     }
                     if (input.IsUpPressed())
                     {
-                        selectedPart.y -= editor_option_adjust_speed;
+						selectedPart.pos.Y -= editor_option_adjust_speed;
                         editor_option_adjust_speed += 0.1f;
                     }
                     break;
@@ -232,52 +232,56 @@ namespace Virulent.World.States.Animations
                         editor_option_adjust_speed += 0.01f;
                     }
                     break;
-                    case 2:
-                    if (input.IsDownPressed() || input.IsRightPressed())
-                    {
-                        selectedPart.scale += editor_option_adjust_speed;
-                        editor_option_adjust_speed += 0.01f;
-                    }
-                    if (input.IsUpPressed() || input.IsLeftPressed())
-                    {
-                        selectedPart.scale -= editor_option_adjust_speed;
-                        editor_option_adjust_speed += 0.01f;
-                    }
+					case 2:
+					if (input.IsRightPressed())
+					{
+						selectedPart.scale.X += editor_option_adjust_speed;
+						editor_option_adjust_speed += 0.01f;
+					}
+					if (input.IsLeftPressed())
+					{
+						selectedPart.scale.X -= editor_option_adjust_speed;
+						editor_option_adjust_speed += 0.01f;
+					}
+					if (input.IsDownPressed())
+					{
+						selectedPart.scale.Y += editor_option_adjust_speed;
+						editor_option_adjust_speed += 0.01f;
+					}
+					if (input.IsUpPressed())
+					{
+						selectedPart.scale.Y -= editor_option_adjust_speed;
+						editor_option_adjust_speed += 0.01f;
+					}
                     break;
                     case 3:
                     if (input.IsDownPressed() || input.IsRightPressed())
                     {
-                        selectedPart.r += editor_option_adjust_speed;
-                        editor_option_adjust_speed += 0.01f;
+						selectedPart.col.R += 1;
                     }
                     if (input.IsUpPressed() || input.IsLeftPressed())
                     {
-                        selectedPart.r -= editor_option_adjust_speed;
-                        editor_option_adjust_speed += 0.01f;
+						selectedPart.col.R -= 1;
                     }
                     break;
                     case 4:
                     if (input.IsDownPressed() || input.IsRightPressed())
                     {
-                        selectedPart.g += editor_option_adjust_speed;
-                        editor_option_adjust_speed += 0.01f;
+						selectedPart.col.G += 1;
                     }
                     if (input.IsUpPressed() || input.IsLeftPressed())
                     {
-                        selectedPart.g -= editor_option_adjust_speed;
-                        editor_option_adjust_speed += 0.01f;
+						selectedPart.col.G -= 1;
                     }
                     break;
                     case 5:
                     if (input.IsDownPressed() || input.IsRightPressed())
                     {
-                        selectedPart.b += editor_option_adjust_speed;
-                        editor_option_adjust_speed += 0.01f;
+						selectedPart.col.B += 1;
                     }
                     if (input.IsUpPressed() || input.IsLeftPressed())
                     {
-                        selectedPart.b -= editor_option_adjust_speed;
-                        editor_option_adjust_speed += 0.01f;
+						selectedPart.col.B -= 1;
                     }
                     break;
                 }
@@ -287,14 +291,15 @@ namespace Virulent.World.States.Animations
                 {
                     for (int i = 0; i < selectedPose.sprites.Count; ++i)
                     {
-                        System.Console.WriteLine("anim.AddSpriteInfo(" + selectedPose.sprites[i].x
-                                                         + "f," + selectedPose.sprites[i].y
-                                                         + "f," + selectedPose.sprites[i].scale
-                                                         + "f," + selectedPose.sprites[i].rot
-                                                         + "f," + selectedPose.sprites[i].r
-                                                         + "f," + selectedPose.sprites[i].g
-                                                         + "f," + selectedPose.sprites[i].b
-                                                         + "f);");
+                        System.Console.WriteLine("anim.AddSpriteInfo(" + selectedPose.sprites[i].pos.X
+																+ "f," + selectedPose.sprites[i].pos.Y
+																+ "f," + selectedPose.sprites[i].scale.X
+																+ "f," + selectedPose.sprites[i].scale.Y
+																+ "f," + selectedPose.sprites[i].rot
+																+ "f," + selectedPose.sprites[i].col.R
+																+ "f," + selectedPose.sprites[i].col.G
+																+ "f," + selectedPose.sprites[i].col.B
+																+ "f);");
                     }
             //anim.AddSpriteInfo(-2f, -15f, 0.5f, 0, 0, 1f, 1f);//head
                 }
@@ -307,13 +312,10 @@ namespace Virulent.World.States.Animations
         #endregion
         public struct SEInfo
         {
-            public float x;
-            public float y;
-            public float scale;
+			public Vector2 pos;
+			public Vector2 scale;
             public float rot;
-            public float r;
-            public float g;
-            public float b;
+			public Color col;
         }
 
         List<SEInfo> sprites;
@@ -323,42 +325,71 @@ namespace Virulent.World.States.Animations
             sprites = new List<SEInfo>();
         }
 
-        public void Add(float x, float y, float scale, float rot, float r, float g, float b)
-        {
-            SEInfo spriteinfo = new SEInfo();
-            spriteinfo.x = x;
-            spriteinfo.y = y;
-            spriteinfo.scale = scale;
-            spriteinfo.rot = rot;
-            spriteinfo.r = r;
-            spriteinfo.g = g;
-            spriteinfo.b = b;
-            sprites.Add(spriteinfo);
-        }
+		public void Add(Vector2 pos, Vector2 scale, float rot, Color col)
+		{
+			SEInfo spriteinfo = new SEInfo();
+			spriteinfo.pos = pos;
+			spriteinfo.scale = scale;
+			spriteinfo.rot = rot;
+			spriteinfo.col = col;
+			sprites.Add(spriteinfo);
+		}
+
+		public void Add(Vector2 pos, Vector2 scale, float rot, float r, float g, float b)
+		{
+			SEInfo spriteinfo = new SEInfo();
+			spriteinfo.pos = pos;
+			spriteinfo.scale = scale;
+			spriteinfo.rot = rot;
+			spriteinfo.col = new Color(r, g, b);
+			sprites.Add(spriteinfo);
+		}
+
+		public void Add(float x, float y, Vector2 scale, float rot, float r, float g, float b)
+		{
+			SEInfo spriteinfo = new SEInfo();
+			spriteinfo.pos.X = x;
+			spriteinfo.pos.Y = y;
+			spriteinfo.scale = scale;
+			spriteinfo.rot = rot;
+			spriteinfo.col = new Color(r, g, b);
+			sprites.Add(spriteinfo);
+		}
+
+		public void Add(float x, float y, float scale, float rot, float r, float g, float b)
+		{
+			SEInfo spriteinfo = new SEInfo();
+			spriteinfo.pos.X = x;
+			spriteinfo.pos.Y = y;
+			spriteinfo.scale.X = spriteinfo.scale.Y = scale;
+			spriteinfo.rot = rot;
+			spriteinfo.col = new Color(r, g, b);
+			sprites.Add(spriteinfo);
+		}
 
         public void Add(float x, float y, float scale, float rot)
         {
             SEInfo spriteinfo = new SEInfo();
-            spriteinfo.x = x;
-            spriteinfo.y = y;
-            spriteinfo.scale = scale;
-            spriteinfo.rot = rot;
-            spriteinfo.r = 1;
-            spriteinfo.g = 1;
-            spriteinfo.b = 1;
+            spriteinfo.pos.X = x;
+			spriteinfo.pos.Y = y;
+			spriteinfo.scale.X = spriteinfo.scale.Y = scale;
+			spriteinfo.rot = rot;
+			spriteinfo.col.R = 1;
+			spriteinfo.col.G = 1;
+			spriteinfo.col.B = 1;
             sprites.Add(spriteinfo);
         }
 
         public void Add(float x, float y)
         {
             SEInfo spriteinfo = new SEInfo();
-            spriteinfo.x = x;
-            spriteinfo.y = y;
-            spriteinfo.scale = 1;
-            spriteinfo.rot = 0;
-            spriteinfo.r = 1;
-            spriteinfo.g = 1;
-            spriteinfo.b = 1;
+            spriteinfo.pos.X = x;
+			spriteinfo.pos.Y = y;
+			spriteinfo.scale.X = spriteinfo.scale.Y = 1;
+			spriteinfo.rot = 0;
+			spriteinfo.col.R = 1;
+			spriteinfo.col.G = 1;
+			spriteinfo.col.B = 1;
             sprites.Add(spriteinfo);
         }
 
@@ -367,11 +398,12 @@ namespace Virulent.World.States.Animations
             if (spriteNum >= sprites.Count) return;
             SEInfo spriteInfo = sprites[spriteNum];
 
-            s.pos.X = x + spriteInfo.x;
-            s.pos.Y = y + spriteInfo.y;
-            s.scale = spriteInfo.scale;
+            s.pos.X = x + spriteInfo.pos.X;
+			s.pos.Y = y + spriteInfo.pos.Y;
+			s.scale.X = spriteInfo.scale.X;
+			s.scale.Y = spriteInfo.scale.Y;
             s.rotation = rot + spriteInfo.rot;
-            s.col = new Color(spriteInfo.r, spriteInfo.g, spriteInfo.b);
+			s.col = spriteInfo.col;
         }
 
         public void PoseSpriteElementTween(SpriteElement s, int spriteNum, float x, float y, float rot, Pose next, float ratio)
@@ -384,13 +416,14 @@ namespace Virulent.World.States.Animations
             if (ratio > 1.0f) ratio = 1.0f;
             if (ratio < 0.0f) ratio = 0.0f;
 
-            s.pos.X = x + ((spriteInfo.x * (1f - ratio)) + (nextSpriteInfo.x * ratio));
-            s.pos.Y = y + ((spriteInfo.y * (1f - ratio)) + (nextSpriteInfo.y * ratio));
-            s.scale = ((spriteInfo.scale * (1f - ratio)) + (nextSpriteInfo.scale * ratio));
+			s.pos.X = x + ((spriteInfo.pos.X * (1f - ratio)) + (nextSpriteInfo.pos.X * ratio));
+			s.pos.Y = y + ((spriteInfo.pos.Y * (1f - ratio)) + (nextSpriteInfo.pos.Y * ratio));
+			s.scale.X = ((spriteInfo.scale.X * (1f - ratio)) + (nextSpriteInfo.scale.X * ratio));
+			s.scale.Y = ((spriteInfo.scale.Y * (1f - ratio)) + (nextSpriteInfo.scale.Y * ratio));
             s.rotation = rot + ((spriteInfo.rot * (1f - ratio)) + (nextSpriteInfo.rot * ratio));
-            s.col = new Color(((spriteInfo.r * (1f - ratio)) + (nextSpriteInfo.r * ratio)),
-                                ((spriteInfo.g * (1f - ratio)) + (nextSpriteInfo.g * ratio)),
-                                ((spriteInfo.b * (1f - ratio)) + (nextSpriteInfo.b * ratio)));
+			s.col = new Color	(((spriteInfo.col.R * (1f - ratio)) + (nextSpriteInfo.col.R * ratio)),
+								((spriteInfo.col.G * (1f - ratio)) + (nextSpriteInfo.col.G * ratio)),
+								((spriteInfo.col.B * (1f - ratio)) + (nextSpriteInfo.col.B * ratio)));
         }
 
         public void Imitate(Pose other)
@@ -398,7 +431,7 @@ namespace Virulent.World.States.Animations
             sprites.Clear();
             foreach(SEInfo s in other.sprites)
             {
-                Add(s.x,s.y,s.scale,s.rot,s.r,s.g,s.b);
+                Add(s.pos,s.scale,s.rot,s.col);
             }
         }
 

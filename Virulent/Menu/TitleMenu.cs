@@ -35,21 +35,21 @@ namespace Virulent.Menu
             el_quit = new SpriteElement(new StringBuilder("Quit Game"), font);
             cursor = new SpriteElement(content.Load<Texture2D>("cursor"));
             title.pos.X = 0.5f;
-            title.scale = 0.5f;
+            title.Scale = 0.5f;
             title.pos.Y = 0.42f;
             el_newgame.pos.X = 0.5f;
-            el_newgame.scale = 0.5f;
+            el_newgame.Scale = 0.5f;
             el_newgame.pos.Y = 0.55f;
             el_options.pos.X = 0.5f;
-            el_options.scale = 0.5f;
+            el_options.Scale = 0.5f;
             el_options.pos.Y = 0.6f;
             el_quit.pos.X = 0.5f;
-            el_quit.scale = 0.5f;
+            el_quit.Scale = 0.5f;
             el_quit.pos.Y = 0.65f;
             cursor.pos.X = 0.35f;
-            cursor.scale = 0.5f;
+            cursor.Scale = 0.5f;
             cursor.pos.Y = 0.4f;
-            cursor.scale = 0.5f;
+            cursor.Scale = 0.5f;
             cursorpos = 0;
 
             startGamePage = new StartGamePage(this);
@@ -69,13 +69,13 @@ namespace Virulent.Menu
             cursor.pos.Y = 0.55f + ((float)cursorpos) * 0.05f;
             cursor.pos.X = 0.35f + ((float)Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 100.0) * 0.005f);
 
-            el_newgame.scale = 0.5f;
-            el_options.scale = 0.5f;
-            el_quit.scale = 0.5f;
+            el_newgame.Scale = 0.5f;
+            el_options.Scale = 0.5f;
+            el_quit.Scale = 0.5f;
 
             if (cursorpos == 0)
             {
-                el_newgame.scale = 0.6f;
+                el_newgame.Scale = 0.6f;
                 if (inputMan.EnterPressed())
                 {
                     switching = true;
@@ -84,7 +84,7 @@ namespace Virulent.Menu
             }
             else if (cursorpos == 1)
             {
-                el_options.scale = 0.6f;
+                el_options.Scale = 0.6f;
                 if (inputMan.EnterPressed())
                 {
                     //switching = true;
@@ -92,7 +92,7 @@ namespace Virulent.Menu
             }
             else if (cursorpos == 2)
             {
-                el_quit.scale = 0.6f;
+                el_quit.Scale = 0.6f;
                 if (inputMan.EnterPressed())
                 {
                     exit = true;

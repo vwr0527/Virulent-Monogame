@@ -23,12 +23,12 @@ namespace Virulent.Cinematic
             bg = new SpriteElement(content.Load<Texture2D>("placeholder_cinematic_background"));
             bg.pos.X = 0.5f;
             bg.pos.Y = 0.5f;
-            bg.scale = 0.65f;
+			bg.Scale = 0.65f;
             bg.col = new Color(0, 0, 0);
             thing = new SpriteElement(content.Load<Texture2D>("placeholder_button_test"));
             thing.pos.X = -0.5f;
             thing.pos.Y = 0.5f;
-            thing.scale = 0.5f;
+			thing.Scale = 0.5f;
         }
 
         float speed = 1.0f;

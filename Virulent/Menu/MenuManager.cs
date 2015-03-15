@@ -43,7 +43,7 @@ namespace Virulent.Menu
             darken.pos.X = 0.5f;
             darken.pos.Y = 0.5f;
             darken.col = new Color(0, 0, 0, 0.5f);
-            darken.scale = 100f;
+            darken.Scale = 100f;
         }
 
         public void Update(GameTime gameTime, InputManager inputMan, WorldManager worldMan)

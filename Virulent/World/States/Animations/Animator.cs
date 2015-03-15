@@ -65,10 +65,15 @@ namespace Virulent.World.States.Animations
             currentPose = p;
         }
 
-        public void AddSpriteInfo(float x, float y, float scale, float rot, float r, float g, float b)
-        {
-            currentPose.Add(x, y, scale, rot, r, g, b);
-        }
+		public void AddSpriteInfo(Vector2 pos, Vector2 scale, float rot, float r, float g, float b)
+		{
+			currentPose.Add(pos, scale, rot, r, g, b);
+		}
+
+		public void AddSpriteInfo(float x, float y, float scale, float rot, float r, float g, float b)
+		{
+			currentPose.Add(x, y, scale, rot, r, g, b);
+		}
 
         public void ImitatePose(Pose other)
         {

@@ -14,12 +14,12 @@ namespace Virulent.Graphics
     {
         public Vector2 pos;
         private Vector2 transformedPos;
-        private Vector2 orig;
+        public Vector2 orig;
         public Color col;
         public StringBuilder text;
         public Texture2D texture;
         public SpriteFont font;
-        public float scale;
+        public Vector2 scale;
         public float rotation;
         public static SpriteFont defaultFont;
         public SpriteElement linkedSprite;
@@ -56,7 +56,7 @@ namespace Virulent.Graphics
             else
                 orig = Vector2.Zero;
 
-            scale = 1.0f;
+            scale = new Vector2(1.0f, 1.0f);
             col = Color.White;
             pos = new Vector2(0, 0);
             transformedPos = new Vector2(0, 0);
@@ -102,8 +102,8 @@ namespace Virulent.Graphics
             pos.X * graphicsDevice.Viewport.Width,
             pos.Y * graphicsDevice.Viewport.Height);
             Vector2 scaleVec = new Vector2(1, 1);
-            scaleVec.X = scale * graphicsDevice.Viewport.Width / 800f;
-            scaleVec.Y = scale * graphicsDevice.Viewport.Height / 480f;
+            scaleVec.X = scale.X * graphicsDevice.Viewport.Width / 800f;
+            scaleVec.Y = scale.Y * graphicsDevice.Viewport.Height / 480f;
             Draw(graphicsDevice, spriteBatch, transformedPos, scaleVec);
         }
         public void DrawGUIUnstretchedFixedHeight(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
@@ -112,7 +112,7 @@ namespace Virulent.Graphics
             pos.X * graphicsDevice.Viewport.Width,
             pos.Y * graphicsDevice.Viewport.Height);
             Vector2 scaleVec = new Vector2(1, 1);
-            scaleVec.X = scaleVec.Y = scale * graphicsDevice.Viewport.Height / 480f;
+            scaleVec.X = scaleVec.Y = scale.X * graphicsDevice.Viewport.Height / 480f;
             Draw(graphicsDevice, spriteBatch, transformedPos, scaleVec);
         }
         public void DrawGUIUnstretchedFixedWidth(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
@@ -121,13 +121,13 @@ namespace Virulent.Graphics
             pos.X * graphicsDevice.Viewport.Width,
             pos.Y * graphicsDevice.Viewport.Height);
             Vector2 scaleVec = new Vector2(1, 1);
-            scaleVec.X = scaleVec.Y = scale * graphicsDevice.Viewport.Width / 800f;
+            scaleVec.X = scaleVec.Y = scale.X * graphicsDevice.Viewport.Width / 800f;
             Draw(graphicsDevice, spriteBatch, transformedPos, scaleVec);
         }
         public void DrawWorld(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
         {
             Vector2 transformedPos = new Vector2(pos.X, pos.Y);
-            Vector2 scaleVec = new Vector2(scale, scale);
+            Vector2 scaleVec = new Vector2(scale.X, scale.Y);
             Draw(graphicsDevice, spriteBatch, transformedPos, scaleVec);
         }
         private void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, Vector2 transformedPos, Vector2 scaleVec)
@@ -140,6 +140,13 @@ namespace Virulent.Graphics
             {
                 spriteBatch.DrawString(font, text, transformedPos, col, rotation, orig, scaleVec, SpriteEffects.None, 0);
             }
-        }
+		}
+		public float Scale
+		{
+			set 
+			{
+				scale.X = scale.Y = value;
+			}
+		}
     }
 }

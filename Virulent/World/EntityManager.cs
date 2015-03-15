@@ -48,7 +48,6 @@ namespace Virulent.World
                         collisionMan.AddEnt(cur);
                 }
             }
-            Pose.RunEditor(inputMan);
         }
 
         private void recursiveDeleteSprite(SpriteElement spriteElement)

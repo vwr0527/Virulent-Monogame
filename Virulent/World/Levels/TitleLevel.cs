@@ -35,13 +35,13 @@ namespace Virulent.World.Levels
         public override void LoadContent(ContentManager content)
         {
             bg = new SpriteElement(content.Load<Texture2D>("gradient"));
-            bg.scale = 5;
+            bg.Scale = 5;
             bg.pos.X = 0f;
             bg.pos.Y = 0f;
             bg.col *= 0.4f;
 
             grid = new SpriteElement(content.Load<Texture2D>("grid"));
-            grid.scale = 1.2f;
+            grid.Scale = 1.2f;
             grid.col = new Color(0, 200, 100) * 0.5f;
 
             rings = new Entity[10];
@@ -60,7 +60,7 @@ namespace Virulent.World.Levels
                 rings[i] = new Entity();
                 rings[i].state = new GearDisk();
                 rings[i].sprite = new SpriteElement(content.Load<Texture2D>("geardisk"));
-                rings[i].sprite.scale = ((float)(11 - i)) * 0.1f;
+                rings[i].sprite.Scale = ((float)(11 - i)) * 0.1f;
                 rings[i].rotvel = 0.00025f - (float)(rand.NextDouble() * 0.0005);
                 rings[i].sprite.col = new Color(255,0,0) * (((float)(11 - i)) * 0.1f);
                 rings[i].vel.X = (((float)(11 - i)) * 0.1f);

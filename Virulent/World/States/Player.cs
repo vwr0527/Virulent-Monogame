@@ -106,25 +106,27 @@ namespace Virulent.World.States
             anim.AddSpriteInfo(20f, 13.9f, 0.31f, -1.03f, 0, 1, 1);
             anim.AddSpriteInfo(-10.3f, -2.8f, 0.33f, 0.21f, 0.2f, 1, 0.5f);
             anim.AddSpriteInfo(9.5f, 2.3f, 0.33f, 0.2f, 0.2f, 1, 0.5f);
-            anim.AddSpriteInfo(26.2f, 18.6f, 0.22f, 8.44f, 0, 1, 1);
-            anim.AddSpriteInfo(-24.3f, 19f, 0.22f, 3.25f, 0, 1, 1);
+            anim.AddSpriteInfo(24.0f, 18.6f, 0.22f, 0.7f, 0, 1, 1);
+            anim.AddSpriteInfo(-25.3f, 18f, 0.22f, 2.0f, 0, 1, 1);
 
             anim.currentPose = anim.poseList["standing"];
             anim.nextPose = anim.poseList["ready"];
 
-            //Pose.ActivateEditor();
-            //Pose.SelectPoseToEdit(anim.currentPose);
+            Pose.ActivateEditor();
+            Pose.SelectPoseToEdit(anim.currentPose);
         }
 
         public override void InitEntity(Entity e)
         {
             e.sprite.col = new Color(0, 255, 0);
-            e.sprite.scale = 1f;
-            e.sprite.linkedSprite.scale = 0.1f;
+            e.sprite.Scale = 1f;
+            e.sprite.linkedSprite.Scale = 0.1f;
         }
 
         public override void UpdateEntity(Entity e, GameTime gameTime, InputManager inputMan)
         {
+            Pose.RunEditor(inputMan);
+
             e.vel.X += 0.005f * (float)(rand.NextDouble() - 0.5) * (float)(gameTime.ElapsedGameTime.Milliseconds);
             e.vel.Y += 0.005f * (float)(gameTime.ElapsedGameTime.Milliseconds);
 
@@ -153,7 +155,7 @@ namespace Virulent.World.States
             }
             e.age += gameTime.ElapsedGameTime;
             e.sprite.col = new Color(0, 255, 0);
-            e.sprite.scale = 1.5f;
+            e.sprite.Scale = 1.5f;
             collider.ppos = e.ppos;
             collider.pos = e.pos;
             //if (e.age > maxAge) e.dead = true;
@@ -184,10 +186,10 @@ namespace Virulent.World.States
             float ratio = (float)((Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 100.0) + 1.0) / 2.0);
             System.Console.WriteLine(ratio);
             anim.DoTweenPose(e, ratio);
-            //anim.currentPose.ImitateEditorPose();
-            //Pose.SetEditorPosePosSize(e.pos, new Vector2(100, 100));
+            anim.currentPose.ImitateEditorPose();
+            Pose.SetEditorPosePosSize(e.pos, new Vector2(100, 100));
 
-            //anim.DoPose(e);
+            anim.DoPose(e);
         }
 
         public override void DrawPoly(Entity e, GraphicsManager graphMan, GameTime gameTime)

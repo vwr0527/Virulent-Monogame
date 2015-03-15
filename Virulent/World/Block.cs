@@ -47,7 +47,7 @@ namespace Virulent.World
         }
         public void SetScale(float scale)
         {
-            sprite.scale = scale;
+            sprite.Scale = scale;
             /*Point oldPos = collider.rect.Center;
             collider.rect.Width = (int)((float)collider.rect.Width * scale);
             collider.rect.Height = (int)((float)collider.rect.Height * scale);

@@ -121,7 +121,7 @@ namespace Virulent.Graphics
             temp.pos.X = x;
             temp.pos.Y = y;
             temp.col = c;
-            temp.scale = scale;
+			temp.Scale = scale;
             temp.rotation = rotation;
             SpriteElement result = worldSprites.Add(temp);
         }

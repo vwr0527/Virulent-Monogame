@@ -37,6 +37,9 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="SDL.dll" />
+    <None Include="doc\Classes.txt" />
+    <None Include="doc\Design.txt" />
+    <None Include="doc\Milestones.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -86,5 +89,6 @@
     <Folder Include="Storage\" />
     <Folder Include="util\" />
     <Folder Include="World\" />
+    <Folder Include="doc\" />
   </ItemGroup>
 </Project>

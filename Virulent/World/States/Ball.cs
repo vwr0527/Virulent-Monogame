@@ -26,7 +26,7 @@ namespace Virulent.World.States
         public override void InitEntity(Entity e)
         {
             e.sprite.col = new Color(0, 255, 0);
-            e.sprite.scale = 1.5f;
+            e.sprite.Scale = 1.5f;
         }
 
         public override void UpdateEntity(Entity e, GameTime gameTime, InputManager inputMan)
@@ -41,7 +41,7 @@ namespace Virulent.World.States
             }
             e.age += gameTime.ElapsedGameTime;
             e.sprite.col = new Color(0, 255, 0);
-            e.sprite.scale = 1.5f;
+            e.sprite.Scale = 1.5f;
             if (e.age > maxAge) e.dead = true;
         }
     }

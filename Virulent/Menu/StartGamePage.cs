@@ -49,14 +49,14 @@ namespace Virulent.Menu
             el_page4.pos.Y = 0.55f;
             el_page5.pos.X = 0.5f;
             el_page5.pos.Y = 0.6f;
-            el_page1.scale = 0.5f;
-            el_page2.scale = 0.5f;
-            el_page3.scale = 0.5f;
-            el_page4.scale = 0.5f;
-            el_page5.scale = 0.5f;
+            el_page1.Scale = 0.5f;
+            el_page2.Scale = 0.5f;
+            el_page3.Scale = 0.5f;
+            el_page4.Scale = 0.5f;
+            el_page5.Scale = 0.5f;
             cursor.pos.X = 0.35f;
             cursor.pos.Y = 0.4f;
-            cursor.scale = 0.5f;
+            cursor.Scale = 0.5f;
             cursorpos = 0;
         }
 
@@ -72,15 +72,15 @@ namespace Virulent.Menu
             cursor.pos.Y = 0.4f + ((float)cursorpos) * 0.05f;
             cursor.pos.X = 0.35f + ((float)Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 100.0) * 0.005f);
 
-            el_page1.scale = .5f;
-            el_page2.scale = .5f;
-            el_page3.scale = .5f;
-            el_page4.scale = .5f;
-            el_page5.scale = .5f;
+            el_page1.Scale = .5f;
+            el_page2.Scale = .5f;
+            el_page3.Scale = .5f;
+            el_page4.Scale = .5f;
+            el_page5.Scale = .5f;
 
             if (cursorpos == 0)
             {
-                el_page1.scale = 0.6f;
+                el_page1.Scale = 0.6f;
                 if (inputMan.EnterPressed())
                 {
                     worldMan.LoadLevel("tutorial");
@@ -89,28 +89,28 @@ namespace Virulent.Menu
             }
             else if (cursorpos == 1)
             {
-                el_page2.scale = 0.6f;
+                el_page2.Scale = 0.6f;
                 if (inputMan.EnterPressed())
                 {
                 }
             }
             else if (cursorpos == 2)
             {
-                el_page3.scale = 0.6f;
+                el_page3.Scale = 0.6f;
                 if (inputMan.EnterPressed())
                 {
                 }
             }
             else if (cursorpos == 3)
             {
-                el_page4.scale = 0.6f;
+                el_page4.Scale = 0.6f;
                 if (inputMan.EnterPressed())
                 {
                 }
             }
             else if (cursorpos == 4)
             {
-                el_page5.scale = 0.6f;
+                el_page5.Scale = 0.6f;
                 if (inputMan.EnterPressed())
                 {
                     switching = true;
