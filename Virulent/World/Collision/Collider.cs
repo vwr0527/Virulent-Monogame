@@ -55,8 +55,10 @@ namespace Virulent.World.Collision
             //We find the lowest amount of time spent outside for collisions both ways.
             //That amount of time is your soonest collision time.
 			collisionInfo.collideTime = 1;
-            collideOneWay(this, other);
+			collisionInfo.slide *= -1;
+			collideOneWay(this, other);
 			collisionInfo.pushOut *= -1;
+			collisionInfo.slide *= -1;
 			collideOneWay(other, this);
 			collisionInfo.pushOut *= -1;
 

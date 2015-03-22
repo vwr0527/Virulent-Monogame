@@ -127,8 +127,8 @@ namespace Virulent.World.States
         {
             Pose.RunEditor(inputMan);
 
-            e.vel.X += 0.005f * (float)(rand.NextDouble() - 0.5) * (float)(gameTime.ElapsedGameTime.Milliseconds);
-            e.vel.Y += 0.005f * (float)(gameTime.ElapsedGameTime.Milliseconds);
+            e.vel.X += 0.0001f * (float)(rand.NextDouble() - 0.5) * (float)(gameTime.ElapsedGameTime.Milliseconds);
+            e.vel.Y += 0.008f * (float)(gameTime.ElapsedGameTime.Milliseconds);
 
             if (inputMan.MoveLeftPressed())
             {
@@ -146,6 +146,10 @@ namespace Virulent.World.States
             {
                 e.vel.Y += 0.01f * (float)(gameTime.ElapsedGameTime.Milliseconds);
             }
+			if (inputMan.JumpPressed()) 
+			{
+				e.vel.Y = -5;
+			}
 
             e.pos += e.vel * (float)(gameTime.ElapsedGameTime.Milliseconds) * 0.1f;
             if (e.pos.Y > 200.0f)
@@ -173,7 +177,7 @@ namespace Virulent.World.States
             e.pos = e.ppos + ((e.pos - e.ppos) * info.collideTime);
 			e.pos += info.pushOut;
 			e.pos += info.slide;
-			e.vel = Collider.GetVelBounce(e.vel, info.wall, 0.8f, 0f);
+			e.vel = Collider.GetVelBounce(e.vel, info.wall, 1f, 0f);
 
             collider.pos = e.pos;
             collider.ppos = e.ppos;
@@ -193,9 +197,11 @@ namespace Virulent.World.States
 
         public override void DrawPoly(Entity e, GraphicsManager graphMan, GameTime gameTime)
         {
-            //collider.Draw(graphMan);
+            collider.Draw(graphMan);
+			//need to find a proper place for camera positioning
             Camera c = graphMan.GetCamera(0);
-            c.pos = e.pos;
+			c.scale = 1.2f - ((e.pos - c.pos).Length() * 0.001f);
+			c.pos += (e.pos - c.pos) * 0.2f;
         }
     }
 }
