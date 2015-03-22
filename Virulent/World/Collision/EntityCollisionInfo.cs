@@ -8,20 +8,18 @@ namespace Virulent.World.Collision
 {
     class EntityCollisionInfo
     {
-        public Vector2 pushOut;
-        public float collideTime;
+		public Collider.CollisionInfo collisionInfo;
         public Entity collideEnt;
         public Block collideBlock;
 
         public EntityCollisionInfo()
         {
-            pushOut = new Vector2();
-            collideTime = 1;
+			collisionInfo = new Collider.CollisionInfo();
+			collisionInfo.collideTime = 1;
         }
         public static void CopyMethod(EntityCollisionInfo dst, EntityCollisionInfo src)
         {
-            dst.pushOut = src.pushOut;
-            dst.collideTime = src.collideTime;
+			dst.collisionInfo = src.collisionInfo;
             dst.collideBlock = src.collideBlock;
             dst.collideEnt = src.collideEnt;
         }

@@ -65,16 +65,16 @@ namespace Virulent.World
                 return null;
         }
 
-        public void CollideBlock(Block b, float collideTime, Vector2 pushOut)
+		public void CollideBlock(Block b, Collider.CollisionInfo info)
         {
             if (state != null)
-                state.CollideBlock(this, b, collideTime, pushOut);
+				state.CollideBlock(this, b, info);
         }
 
-        public void CollideEntity(Entity e, float collideTime, Vector2 pushOut)
+		public void CollideEntity(Entity e, Collider.CollisionInfo info)
         {
             if (state != null)
-                state.CollideEntity(this, e, collideTime, pushOut);
+                state.CollideEntity(this, e, info);
         }
 
         //sprite copy is performed by EntityManager

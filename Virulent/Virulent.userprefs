@@ -1,26 +1,14 @@
 ﻿<Properties StartupItem="Virulent.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="World\States\Animations\Pose.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="World\States\Player.cs">
     <Files>
-      <File FileName="VirulentGame.cs" Line="18" Column="18" />
-      <File FileName="doc\Classes.txt" Line="1" Column="1" />
-      <File FileName="doc\Design.txt" Line="1" Column="1" />
-      <File FileName="World\States\Animations\Animator.cs" Line="4" Column="4" />
-      <File FileName="World\States\Player.cs" Line="13" Column="13" />
-      <File FileName="World\EntityManager.cs" Line="1" Column="1" />
-      <File FileName="Graphics\SpriteElement.cs" Line="31" Column="31" />
-      <File FileName="Graphics\GraphicElement.cs" Line="1" Column="1" />
-      <File FileName="Cinematic\CinematicManager.cs" Line="32" Column="32" />
-      <File FileName="Graphics\GraphicsManager.cs" Line="22" Column="22" />
-      <File FileName="Menu\MainMenu.cs" Line="14" Column="14" />
-      <File FileName="Menu\MenuManager.cs" Line="21" Column="21" />
-      <File FileName="Menu\StartGamePage.cs" Line="27" Column="27" />
-      <File FileName="Menu\TitleMenu.cs" Line="26" Column="26" />
-      <File FileName="World\Block.cs" Line="34" Column="34" />
-      <File FileName="World\Levels\TitleLevel.cs" Line="34" Column="34" />
-      <File FileName="World\Levels\TutorialLevel.cs" Line="17" Column="17" />
-      <File FileName="World\States\Ball.cs" Line="23" Column="23" />
-      <File FileName="World\States\Animations\Pose.cs" Line="25" Column="25" />
+      <File FileName="World\WorldManager.cs" Line="10" Column="10" />
+      <File FileName="World\Collision\Collider.cs" Line="61" Column="61" />
+      <File FileName="World\Collision\CollisionManager.cs" Line="70" Column="70" />
+      <File FileName="World\Collision\EntityCollisionInfo.cs" Line="19" Column="19" />
+      <File FileName="World\States\Player.cs" Line="55" Column="55" />
+      <File FileName="World\States\State.cs" Line="10" Column="10" />
+      <File FileName="World\Entity.cs" Line="10" Column="10" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

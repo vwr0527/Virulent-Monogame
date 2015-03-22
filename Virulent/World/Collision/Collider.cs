@@ -22,12 +22,13 @@ namespace Virulent.World.Collision
         public float miny;
 
         //unit tangent vector
-        private Vector2 pushOut = new Vector2();
-        private float soonestCollisionTime = 1;
+		public CollisionInfo collisionInfo;
 
         public Collider()
         {
             pts = new List<Vector2>();
+			collisionInfo = new CollisionInfo();
+			collisionInfo.collideTime = 1;
         }
 
         //if returns 1, means no collision happened
@@ -35,7 +36,8 @@ namespace Virulent.World.Collision
         //0 means the collision happened right after they started moving
         //0.5 means the collision happened halfway between ppos and pos.
         //1 means the collision happened after the maximum amount of time, when the objects were at their respective pos', they have just barely touched.
-        public float DoCollide(Collider other)
+		//edit: return collisioninfo instead
+		public CollisionInfo DoCollide(Collider other)
         {
             //for each line created by each point moving from ppos to pos and rotating from prot to rot,
             //we test against the wall created by connecting point 1 to point 2, then point 2 to point 3, and so on for the entirety of points in the other Collider.
@@ -52,13 +54,13 @@ namespace Virulent.World.Collision
             //then repeat the process going from other Collider to this one.
             //We find the lowest amount of time spent outside for collisions both ways.
             //That amount of time is your soonest collision time.
-            soonestCollisionTime = 1;
-            pushOut *= -1;
+			collisionInfo.collideTime = 1;
             collideOneWay(this, other);
-            pushOut *= -1;
-            collideOneWay(other, this);
+			collisionInfo.pushOut *= -1;
+			collideOneWay(other, this);
+			collisionInfo.pushOut *= -1;
 
-            return soonestCollisionTime;
+			return collisionInfo;
         }
         private void collideOneWay(Collider a, Collider b)
         {
@@ -81,15 +83,10 @@ namespace Virulent.World.Collision
                     else
                         wallEnd = b.pts[j + 1];
 
-                    float thisCollisionTime = get_line_intersection_t(lineStart.X, lineStart.Y, lineEnd.X, lineEnd.Y, wallStart.X, wallStart.Y, wallEnd.X, wallEnd.Y);
-                    if (thisCollisionTime < soonestCollisionTime)
+                    CollisionInfo thisCollisionInfo = get_line_intersection(lineStart.X, lineStart.Y, lineEnd.X, lineEnd.Y, wallStart.X, wallStart.Y, wallEnd.X, wallEnd.Y);
+					if (thisCollisionInfo.didCollide && thisCollisionInfo.collideTime < collisionInfo.collideTime)
                     {
-                        soonestCollisionTime = thisCollisionTime;
-                        pushOut = wallStart - wallEnd;
-                        pushOut.Normalize();
-                        float temp = pushOut.X;
-                        pushOut.X = -pushOut.Y;
-                        pushOut.Y = temp;
+						collisionInfo = thisCollisionInfo;
                     }
                 }
             }
@@ -123,7 +120,7 @@ namespace Virulent.World.Collision
         {
             graphMan.AddLine(33f, 44f, Color.Blue, 100f, 100f, Color.White);
             graphMan.AddLine(50f, -50f, Color.White, 70, 80f, Color.Red);
-            float t = get_line_intersection_t2(33, 44, 100, 100, 50, -50, 70, 80);
+			float t = get_line_intersection(33, 44, 100, 100, 50, -50, 70, 80).collideTime;
             graphMan.AddLine(33f, 44f, Color.Blue, ((100 - 33) * t) + 33f, ((100 - 44) * t) + 44f, Color.Blue);
         }
 
@@ -161,7 +158,7 @@ namespace Virulent.World.Collision
 
         public Vector2 GetPushOut()
         {
-            return pushOut;
+			return collisionInfo.pushOut;
         }
 
         private bool IsLeft(Vector2 a, Vector2 b, Vector2 c)
@@ -178,56 +175,40 @@ namespace Virulent.World.Collision
             return new Vector2(rotatedX,rotatedY);
         }
 
-        struct PointTest
+        public struct CollisionInfo
         {
-            public Vector2 p;
-            public bool test;
-            public PointTest(Vector2 _p, bool _tst)
-            {
-                p = _p;
-                test = _tst;
-            }
+            public Vector2 point;
+			public bool didCollide;
+			public Vector2 slide;
+			public Vector2 wall;
+			public float collideTime;
+			public Vector2 pushOut;
+			public CollisionInfo(Vector2 ip, Vector2 endp, Vector2 w, float t)
+			{
+				point = ip;
+				didCollide = true;
+				wall = Vector2.Normalize(w);
+				collideTime = t;
+				pushOut = wall;
+				float temp = pushOut.X;
+				pushOut.X = -pushOut.Y;
+				pushOut.Y = temp;
+				pushOut *= 0.1f;
+				Vector2 leftOver = endp - ip;
+				slide = wall * Vector2.Dot(leftOver, wall);
+			}
         }
 
-        private PointTest get_line_intersection(float p0_x, float p0_y, float p1_x, float p1_y,
-            float p2_x, float p2_y, float p3_x, float p3_y)
-        {
-            Vector2 result = new Vector2();
-            float s1_x, s1_y, s2_x, s2_y;
-            s1_x = p1_x - p0_x; s1_y = p1_y - p0_y;
-            s2_x = p3_x - p2_x; s2_y = p3_y - p2_y;
+		public static Vector2 GetVelBounce(Vector2 vel, Vector2 wall, float friction, float elasticity)
+		{
+			Vector2 outbound = (2 * (Vector2.Dot(vel, wall) * wall)) - vel;
+			Vector2 alongWall = 0.5f * (vel + outbound);
+			Vector2 bounceOut = outbound - alongWall;
+			return (alongWall * friction) + (bounceOut * elasticity);
+		}
 
-            float s, t;
-            s = (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) / (-s2_x * s1_y + s1_x * s2_y);
-            t = (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / (-s2_x * s1_y + s1_x * s2_y);
-
-            if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
-            {
-                result.X = p0_x + (t * s1_x);
-                result.Y = p0_y + (t * s1_y);
-                return new PointTest(result, true);
-            }
-            return new PointTest(result, false);
-        }
-
-        private float get_line_intersection_t(float p0_x, float p0_y, float p1_x, float p1_y,
-            float p2_x, float p2_y, float p3_x, float p3_y)
-        {
-            float s1_x, s1_y, s2_x, s2_y;
-            s1_x = p1_x - p0_x; s1_y = p1_y - p0_y;
-            s2_x = p3_x - p2_x; s2_y = p3_y - p2_y;
-
-            float s, t;
-            s = (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) / (-s2_x * s1_y + s1_x * s2_y);
-            t = (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / (-s2_x * s1_y + s1_x * s2_y);
-
-            if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
-            {
-                return t;
-            }
-            return 1;
-        }
-        public static float get_line_intersection_t2(float p0_x, float p0_y, float p1_x, float p1_y,
+		// t = intersection time(0.0~1.0)
+		public static CollisionInfo get_line_intersection(float p0_x, float p0_y, float p1_x, float p1_y,
             float p2_x, float p2_y, float p3_x, float p3_y)
         {
             float s1_x, s1_y, s2_x, s2_y;
@@ -240,9 +221,14 @@ namespace Virulent.World.Collision
 
             if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
             {
-                return t;
+				Vector2 point = new Vector2(p0_x + (t * s1_x), p0_y + (t * s1_y));
+				Vector2 wall = new Vector2(s2_x, s2_y);
+				Vector2 endpoint = new Vector2(p1_x, p1_y);
+				return new CollisionInfo(point, endpoint, wall, t);
             }
-            return 1;
+			CollisionInfo nothing = new CollisionInfo();
+			nothing.collideTime = 1;
+			return nothing;
         }
     }
 }

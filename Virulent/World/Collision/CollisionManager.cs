@@ -76,9 +76,7 @@ namespace Virulent.World.Collision
             //  naive collisions = gather all likely collisions
             //  eliminate collisions that won't happen (a->b, b->c)
 
-            ///////////////////////////////////////////////////////////////////
             //  For each entity
-            ///////////////////////////////////////////////////////////////////
             for(int i = 0, maxEnts = entsqrs.Size(); i < maxEnts; ++i)
             {
                 EntitySquares e = entsqrs.ElementAt(i);
@@ -89,16 +87,16 @@ namespace Virulent.World.Collision
                 //Calculate the EntityCollisionInfos for the things you added
                 DoCollisions(e);
                 //Apply the collision calculations
-            if(collideBlocksInfo.Size() > 1) System.Console.WriteLine(collideBlocksInfo.Size());
+            	//if(collideBlocksInfo.Size() > 1) System.Console.WriteLine(collideBlocksInfo.Size());
                 for (int j = collideBlocksInfo.Size() - 1; j >= 0; --j)
                 {
                     EntityCollisionInfo b = collideBlocksInfo.ElementAt(j);
-                    e.entity.CollideBlock(b.collideBlock, b.collideTime, b.pushOut);
+					e.entity.CollideBlock(b.collideBlock, b.collisionInfo);
                 }
                 for (int j = collideEntsInfo.Size() - 1; j >= 0; --j)
                 {
                     EntityCollisionInfo e2 = collideEntsInfo.ElementAt(j);
-                    e.entity.CollideEntity(e2.collideEnt, e2.collideTime, e2.pushOut);
+					e.entity.CollideEntity(e2.collideEnt, e2.collisionInfo);
                 }
 
                 //ready for the next entity to use
@@ -106,10 +104,6 @@ namespace Virulent.World.Collision
                 collideAgainstBlocks.Clear();
                 collideEntsInfo.EmptyAll();
                 collideBlocksInfo.EmptyAll();
-
-                ////////////////////////////////////////////////////////////////
-
-
             }
 
             //Finished collision detection for all entities.
@@ -180,38 +174,33 @@ namespace Virulent.World.Collision
             }
         }
 
+		//collides e with all the entities and blocks in the "to collide" lists (collideAgainstEnts, collideAgainstBlocks), storing the results in collideEntsInfo and collideBlocksInfo
         private void DoCollisions(EntitySquares e)
         {
             Collider entityCollider = e.entity.GetCollider();
             foreach (Entity e2 in collideAgainstEnts)
             {
-                float collideTime = e2.GetCollider().DoCollide(entityCollider);
+				Collider.CollisionInfo collideInfo = e2.GetCollider().DoCollide(entityCollider);
                 if (EntityEntityCollision(e2.GetCollider(), entityCollider))
                 {
-                    addedECITemp.collideTime = collideTime;
-                    addedECITemp.pushOut = e2.GetCollider().GetPushOut();
+					addedECITemp.collisionInfo = collideInfo;
                     addedECITemp.collideEnt = e2;
                     collideEntsInfo.Add(addedECITemp);
                     addedECITemp.collideBlock = null;
-                    addedECITemp.collideEnt = null;
-                    addedECITemp.collideTime = 1;
-                    addedECITemp.pushOut = Vector2.Zero;
+					addedECITemp.collideEnt = null;
                 }
             }
             entityCollider = e.entity.GetCollider(); //unknown why this fixes weird bug
             foreach (Block b in collideAgainstBlocks)
             {
-                float collideTime = b.GetCollider().DoCollide(entityCollider);
-                if (collideTime < 1)
+				Collider.CollisionInfo collideInfo = b.GetCollider().DoCollide(entityCollider);
+				if (collideInfo.didCollide && collideInfo.collideTime < 1)
                 {
-                    addedECITemp.collideTime = collideTime;
-                    addedECITemp.pushOut = b.GetCollider().GetPushOut();
+					addedECITemp.collisionInfo = collideInfo;
                     addedECITemp.collideBlock = b;
                     collideBlocksInfo.Add(addedECITemp);
                     addedECITemp.collideBlock = null;
                     addedECITemp.collideEnt = null;
-                    addedECITemp.collideTime = 1;
-                    addedECITemp.pushOut = Vector2.Zero;
                 }
             }
         }

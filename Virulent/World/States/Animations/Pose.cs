@@ -11,305 +11,6 @@ namespace Virulent.World.States.Animations
 {
     class Pose
     {
-        #region POSE_EDITOR
-        /// //////////////////////////////////////////////////////
-        ///                EDITOR STUFF Begin
-        /// //////////////////////////////////////////////////////
-        private static bool editor_active = false;
-        private static bool editor_pose_loaded = false;
-        private static Pose selectedPose;
-        private static bool editor_part_selected = false;
-        private static SEInfo selectedPart;
-        private static bool editor_option_selected = false;
-        private static int selectedOption = 0;
-        private static int editor_current_part_index = 0;
-        private static float editor_option_adjust_speed = 0.1f;
-        private static Vector2 pose_pos;
-        private static Vector2 pose_box;
-        private static int num_part_options = 5;
-
-        public static void ActivateEditor()
-        {
-            editor_active = true;
-            selectedPose = new Pose();
-        }
-
-        public static void StopEditor()
-        {
-            editor_active = false;
-        }
-
-        public static void SelectPoseToEdit(Pose target)
-        {
-            if (!editor_active) return;
-
-            selectedPose.Imitate(target);
-            editor_pose_loaded = true;
-        }
-
-        public static void SetEditorPosePosSize(Vector2 p, Vector2 b)
-        {
-            pose_pos = p;
-            pose_box = b;
-        }
-
-        public static void DrawEditor(GraphicsManager graphMan)
-        {
-            if (!editor_active) return;
-
-            if (editor_pose_loaded && !editor_part_selected)
-            {
-                drawPoseBox(graphMan, Color.Green);
-				drawPartBox(graphMan, Color.Purple, new Vector2(selectedPart.pos.X, selectedPart.pos.Y));
-            }
-            if (editor_pose_loaded && editor_part_selected && !editor_option_selected)
-            {
-                drawPoseBox(graphMan, new Color(0,0.2f,0));
-                Color col = Color.Blue;
-				drawPartBox(graphMan, new Vector2(selectedPart.pos.X, selectedPart.pos.Y));
-            }
-            if (editor_pose_loaded && editor_part_selected && editor_option_selected)
-            {
-                drawPoseBox(graphMan, Color.DarkBlue);
-				drawPartBox(graphMan, new Vector2(selectedPart.pos.X, selectedPart.pos.Y));
-            }
-        }
-
-        private static void drawPoseBox(GraphicsManager graphMan, Color col)
-        {
-            graphMan.AddLine(pose_pos.X - (pose_box.X / 2),
-                            pose_pos.Y - (pose_box.Y / 2), col,
-                            pose_pos.X + (pose_box.X / 2),
-                            pose_pos.Y - (pose_box.Y / 2), col);
-            graphMan.AddLine(pose_pos.X + (pose_box.X / 2),
-                            pose_pos.Y - (pose_box.Y / 2), col,
-                            pose_pos.X + (pose_box.X / 2),
-                            pose_pos.Y + (pose_box.Y / 2), col);
-            graphMan.AddLine(pose_pos.X + (pose_box.X / 2),
-                            pose_pos.Y + (pose_box.Y / 2), col,
-                            pose_pos.X - (pose_box.X / 2),
-                            pose_pos.Y + (pose_box.Y / 2), col);
-            graphMan.AddLine(pose_pos.X - (pose_box.X / 2),
-                            pose_pos.Y + (pose_box.Y / 2), col,
-                            pose_pos.X - (pose_box.X / 2),
-                            pose_pos.Y - (pose_box.Y / 2), col);
-        }
-
-        private static void drawPartBox(GraphicsManager graphMan, Vector2 offset)
-        {
-            Color col = Color.Blue;
-            float x = offset.X + pose_pos.X;
-            float y = offset.Y + pose_pos.Y;
-            float s = 0.5f;
-            float r = 0.0f;
-            switch (selectedOption)
-            {
-                case 0: col = Color.White; graphMan.DrawString(x, y, col, s, r, "xy"); break;
-                case 1: col = Color.Blue; graphMan.DrawString(x, y, col, s, r, "R"); break;
-                case 2: col = Color.Yellow; graphMan.DrawString(x, y, col, s, r, "S"); break;
-                case 3: col = Color.Red; graphMan.DrawString(x, y, col, s, r, "r"); break;
-                case 4: col = Color.Green; graphMan.DrawString(x, y, col, s, r, "g"); break;
-                case 5: col = Color.Blue; graphMan.DrawString(x, y, col, s, r, "b"); break;
-                default: break;
-            }
-            drawPartBox(graphMan, col, offset);
-        }
-        private static void drawPartBox(GraphicsManager graphMan, Color col, Vector2 offset)
-        {
-            graphMan.AddLine(offset.X + pose_pos.X - (pose_box.X / 16),
-                            offset.Y + pose_pos.Y - (pose_box.Y / 16), col,
-                            offset.X + pose_pos.X + (pose_box.X / 16),
-                            offset.Y + pose_pos.Y - (pose_box.Y / 16), col);
-            graphMan.AddLine(offset.X + pose_pos.X + (pose_box.X / 16),
-                            offset.Y + pose_pos.Y - (pose_box.Y / 16), col,
-                            offset.X + pose_pos.X + (pose_box.X / 16),
-                            offset.Y + pose_pos.Y + (pose_box.Y / 16), col);
-            graphMan.AddLine(offset.X + pose_pos.X + (pose_box.X / 16),
-                            offset.Y + pose_pos.Y + (pose_box.Y / 16), col,
-                            offset.X + pose_pos.X - (pose_box.X / 16),
-                            offset.Y + pose_pos.Y + (pose_box.Y / 16), col);
-            graphMan.AddLine(offset.X + pose_pos.X - (pose_box.X / 16),
-                            offset.Y + pose_pos.Y + (pose_box.Y / 16), col,
-                            offset.X + pose_pos.X - (pose_box.X / 16),
-                            offset.Y + pose_pos.Y - (pose_box.Y / 16), col);
-        }
-
-        public static void RunEditor(InputManager input)
-        {
-            //Debug.WriteLine("RunEditor running: " + editor_pose_loaded + " " + editor_part_selected + " " + editor_option_selected);
-            if (!editor_active) return;
-
-            //if a pose is selected, arrow key means change current selected part
-            if (editor_pose_loaded && !editor_part_selected)
-            {
-                if (input.DownPressed())
-                {
-                    ++editor_current_part_index;
-                    if (editor_current_part_index > selectedPose.sprites.Count - 1)
-                    {
-                        editor_current_part_index = 0;
-                    }
-                }
-                if (input.UpPressed())
-                {
-                    --editor_current_part_index;
-                    if (editor_current_part_index < 0)
-                    {
-                        editor_current_part_index = selectedPose.sprites.Count - 1;
-                    }
-                }
-                selectedPart = selectedPose.sprites[editor_current_part_index];
-                if (input.EnterPressed())
-                {
-                    editor_part_selected = true;
-                }
-                //if (input.BackspacePressed()) editor_pose_loaded = false;
-            }
-            else
-            if (editor_pose_loaded && editor_part_selected && !editor_option_selected)
-            {
-                if (input.DownPressed())
-                {
-                    ++selectedOption;
-                    if (selectedOption > num_part_options)
-                    {
-                        selectedOption = 0;
-                    }
-                }
-                if (input.UpPressed())
-                {
-                    --selectedOption;
-                    if (selectedOption < 0)
-                    {
-                        selectedOption = num_part_options;
-                    }
-                }
-                if (input.EnterPressed())
-                {
-                    editor_option_selected = true;
-                }
-                if (input.BackspacePressed()) editor_part_selected = false;
-            }
-            else
-            if (editor_pose_loaded && editor_part_selected && editor_option_selected)
-            {
-                if ((!input.IsUpPressed()) && (!input.IsDownPressed()) && (!input.IsLeftPressed()) && (!input.IsRightPressed())) editor_option_adjust_speed = 0.0f;
-                else
-                switch (selectedOption)
-                {
-                    default:
-                    case 0:
-                    if (input.IsLeftPressed())
-                    {
-                        selectedPart.pos.X -= editor_option_adjust_speed;
-                        editor_option_adjust_speed += 0.1f;
-                    }
-                    if (input.IsRightPressed())
-                    {
-						selectedPart.pos.X += editor_option_adjust_speed;
-                        editor_option_adjust_speed += 0.1f;
-                    }
-                    if (input.IsDownPressed())
-                    {
-						selectedPart.pos.Y += editor_option_adjust_speed;
-                        editor_option_adjust_speed += 0.1f;
-                    }
-                    if (input.IsUpPressed())
-                    {
-						selectedPart.pos.Y -= editor_option_adjust_speed;
-                        editor_option_adjust_speed += 0.1f;
-                    }
-                    break;
-                    case 1:
-                    if (input.IsDownPressed() || input.IsRightPressed())
-                    {
-                        selectedPart.rot += editor_option_adjust_speed;
-                        editor_option_adjust_speed += 0.01f;
-                    }
-                    if (input.IsUpPressed() || input.IsLeftPressed())
-                    {
-                        selectedPart.rot -= editor_option_adjust_speed;
-                        editor_option_adjust_speed += 0.01f;
-                    }
-                    break;
-					case 2:
-					if (input.IsRightPressed())
-					{
-						selectedPart.scale.X += editor_option_adjust_speed;
-						editor_option_adjust_speed += 0.01f;
-					}
-					if (input.IsLeftPressed())
-					{
-						selectedPart.scale.X -= editor_option_adjust_speed;
-						editor_option_adjust_speed += 0.01f;
-					}
-					if (input.IsDownPressed())
-					{
-						selectedPart.scale.Y += editor_option_adjust_speed;
-						editor_option_adjust_speed += 0.01f;
-					}
-					if (input.IsUpPressed())
-					{
-						selectedPart.scale.Y -= editor_option_adjust_speed;
-						editor_option_adjust_speed += 0.01f;
-					}
-                    break;
-                    case 3:
-                    if (input.IsDownPressed() || input.IsRightPressed())
-                    {
-						selectedPart.col.R += 1;
-                    }
-                    if (input.IsUpPressed() || input.IsLeftPressed())
-                    {
-						selectedPart.col.R -= 1;
-                    }
-                    break;
-                    case 4:
-                    if (input.IsDownPressed() || input.IsRightPressed())
-                    {
-						selectedPart.col.G += 1;
-                    }
-                    if (input.IsUpPressed() || input.IsLeftPressed())
-                    {
-						selectedPart.col.G -= 1;
-                    }
-                    break;
-                    case 5:
-                    if (input.IsDownPressed() || input.IsRightPressed())
-                    {
-						selectedPart.col.B += 1;
-                    }
-                    if (input.IsUpPressed() || input.IsLeftPressed())
-                    {
-						selectedPart.col.B -= 1;
-                    }
-                    break;
-                }
-                selectedPose.sprites[editor_current_part_index] = selectedPart;
-                if (input.BackspacePressed()) editor_option_selected = false;
-                if (input.EnterPressed())
-                {
-                    for (int i = 0; i < selectedPose.sprites.Count; ++i)
-                    {
-                        System.Console.WriteLine("anim.AddSpriteInfo(" + selectedPose.sprites[i].pos.X
-																+ "f," + selectedPose.sprites[i].pos.Y
-																+ "f," + selectedPose.sprites[i].scale.X
-																+ "f," + selectedPose.sprites[i].scale.Y
-																+ "f," + selectedPose.sprites[i].rot
-																+ "f," + selectedPose.sprites[i].col.R
-																+ "f," + selectedPose.sprites[i].col.G
-																+ "f," + selectedPose.sprites[i].col.B
-																+ "f);");
-                    }
-            //anim.AddSpriteInfo(-2f, -15f, 0.5f, 0, 0, 1f, 1f);//head
-                }
-            }
-        }
-
-        /// //////////////////////////////////////////////////////
-        ///                EDITOR STUFF End
-        /// //////////////////////////////////////////////////////
-        #endregion
         public struct SEInfo
         {
 			public Vector2 pos;
@@ -439,5 +140,305 @@ namespace Virulent.World.States.Animations
         {
             Imitate(selectedPose);
         }
+
+		#region POSE_EDITOR
+		/// //////////////////////////////////////////////////////
+		///                EDITOR STUFF Begin
+		/// //////////////////////////////////////////////////////
+		private static bool editor_active = false;
+		private static bool editor_pose_loaded = false;
+		private static Pose selectedPose;
+		private static bool editor_part_selected = false;
+		private static SEInfo selectedPart;
+		private static bool editor_option_selected = false;
+		private static int selectedOption = 0;
+		private static int editor_current_part_index = 0;
+		private static float editor_option_adjust_speed = 0.1f;
+		private static Vector2 pose_pos;
+		private static Vector2 pose_box;
+		private static int num_part_options = 5;
+
+		public static void ActivateEditor()
+		{
+			editor_active = true;
+			selectedPose = new Pose();
+		}
+
+		public static void StopEditor()
+		{
+			editor_active = false;
+		}
+
+		public static void SelectPoseToEdit(Pose target)
+		{
+			if (!editor_active) return;
+
+			selectedPose.Imitate(target);
+			editor_pose_loaded = true;
+		}
+
+		public static void SetEditorPosePosSize(Vector2 p, Vector2 b)
+		{
+			pose_pos = p;
+			pose_box = b;
+		}
+
+		public static void DrawEditor(GraphicsManager graphMan)
+		{
+			if (!editor_active) return;
+
+			if (editor_pose_loaded && !editor_part_selected)
+			{
+				drawPoseBox(graphMan, Color.Green);
+				drawPartBox(graphMan, Color.Purple, new Vector2(selectedPart.pos.X, selectedPart.pos.Y));
+			}
+			if (editor_pose_loaded && editor_part_selected && !editor_option_selected)
+			{
+				drawPoseBox(graphMan, new Color(0,0.2f,0));
+				Color col = Color.Blue;
+				drawPartBox(graphMan, new Vector2(selectedPart.pos.X, selectedPart.pos.Y));
+			}
+			if (editor_pose_loaded && editor_part_selected && editor_option_selected)
+			{
+				drawPoseBox(graphMan, Color.DarkBlue);
+				drawPartBox(graphMan, new Vector2(selectedPart.pos.X, selectedPart.pos.Y));
+			}
+		}
+
+		private static void drawPoseBox(GraphicsManager graphMan, Color col)
+		{
+			graphMan.AddLine(pose_pos.X - (pose_box.X / 2),
+				pose_pos.Y - (pose_box.Y / 2), col,
+				pose_pos.X + (pose_box.X / 2),
+				pose_pos.Y - (pose_box.Y / 2), col);
+			graphMan.AddLine(pose_pos.X + (pose_box.X / 2),
+				pose_pos.Y - (pose_box.Y / 2), col,
+				pose_pos.X + (pose_box.X / 2),
+				pose_pos.Y + (pose_box.Y / 2), col);
+			graphMan.AddLine(pose_pos.X + (pose_box.X / 2),
+				pose_pos.Y + (pose_box.Y / 2), col,
+				pose_pos.X - (pose_box.X / 2),
+				pose_pos.Y + (pose_box.Y / 2), col);
+			graphMan.AddLine(pose_pos.X - (pose_box.X / 2),
+				pose_pos.Y + (pose_box.Y / 2), col,
+				pose_pos.X - (pose_box.X / 2),
+				pose_pos.Y - (pose_box.Y / 2), col);
+		}
+
+		private static void drawPartBox(GraphicsManager graphMan, Vector2 offset)
+		{
+			Color col = Color.Blue;
+			float x = offset.X + pose_pos.X;
+			float y = offset.Y + pose_pos.Y;
+			float s = 0.5f;
+			float r = 0.0f;
+			switch (selectedOption)
+			{
+				case 0: col = Color.White; graphMan.DrawString(x, y, col, s, r, "xy"); break;
+				case 1: col = Color.Blue; graphMan.DrawString(x, y, col, s, r, "R"); break;
+				case 2: col = Color.Yellow; graphMan.DrawString(x, y, col, s, r, "S"); break;
+				case 3: col = Color.Red; graphMan.DrawString(x, y, col, s, r, "r"); break;
+				case 4: col = Color.Green; graphMan.DrawString(x, y, col, s, r, "g"); break;
+				case 5: col = Color.Blue; graphMan.DrawString(x, y, col, s, r, "b"); break;
+				default: break;
+			}
+			drawPartBox(graphMan, col, offset);
+		}
+		private static void drawPartBox(GraphicsManager graphMan, Color col, Vector2 offset)
+		{
+			graphMan.AddLine(offset.X + pose_pos.X - (pose_box.X / 16),
+				offset.Y + pose_pos.Y - (pose_box.Y / 16), col,
+				offset.X + pose_pos.X + (pose_box.X / 16),
+				offset.Y + pose_pos.Y - (pose_box.Y / 16), col);
+			graphMan.AddLine(offset.X + pose_pos.X + (pose_box.X / 16),
+				offset.Y + pose_pos.Y - (pose_box.Y / 16), col,
+				offset.X + pose_pos.X + (pose_box.X / 16),
+				offset.Y + pose_pos.Y + (pose_box.Y / 16), col);
+			graphMan.AddLine(offset.X + pose_pos.X + (pose_box.X / 16),
+				offset.Y + pose_pos.Y + (pose_box.Y / 16), col,
+				offset.X + pose_pos.X - (pose_box.X / 16),
+				offset.Y + pose_pos.Y + (pose_box.Y / 16), col);
+			graphMan.AddLine(offset.X + pose_pos.X - (pose_box.X / 16),
+				offset.Y + pose_pos.Y + (pose_box.Y / 16), col,
+				offset.X + pose_pos.X - (pose_box.X / 16),
+				offset.Y + pose_pos.Y - (pose_box.Y / 16), col);
+		}
+
+		public static void RunEditor(InputManager input)
+		{
+			//Debug.WriteLine("RunEditor running: " + editor_pose_loaded + " " + editor_part_selected + " " + editor_option_selected);
+			if (!editor_active) return;
+
+			//if a pose is selected, arrow key means change current selected part
+			if (editor_pose_loaded && !editor_part_selected)
+			{
+				if (input.DownPressed())
+				{
+					++editor_current_part_index;
+					if (editor_current_part_index > selectedPose.sprites.Count - 1)
+					{
+						editor_current_part_index = 0;
+					}
+				}
+				if (input.UpPressed())
+				{
+					--editor_current_part_index;
+					if (editor_current_part_index < 0)
+					{
+						editor_current_part_index = selectedPose.sprites.Count - 1;
+					}
+				}
+				selectedPart = selectedPose.sprites[editor_current_part_index];
+				if (input.EnterPressed())
+				{
+					editor_part_selected = true;
+				}
+				//if (input.BackspacePressed()) editor_pose_loaded = false;
+			}
+			else
+				if (editor_pose_loaded && editor_part_selected && !editor_option_selected)
+				{
+					if (input.DownPressed())
+					{
+						++selectedOption;
+						if (selectedOption > num_part_options)
+						{
+							selectedOption = 0;
+						}
+					}
+					if (input.UpPressed())
+					{
+						--selectedOption;
+						if (selectedOption < 0)
+						{
+							selectedOption = num_part_options;
+						}
+					}
+					if (input.EnterPressed())
+					{
+						editor_option_selected = true;
+					}
+					if (input.BackspacePressed()) editor_part_selected = false;
+				}
+				else
+					if (editor_pose_loaded && editor_part_selected && editor_option_selected)
+					{
+						if ((!input.IsUpPressed()) && (!input.IsDownPressed()) && (!input.IsLeftPressed()) && (!input.IsRightPressed())) editor_option_adjust_speed = 0.0f;
+						else
+							switch (selectedOption)
+						{
+							default:
+							case 0:
+								if (input.IsLeftPressed())
+								{
+									selectedPart.pos.X -= editor_option_adjust_speed;
+									editor_option_adjust_speed += 0.1f;
+								}
+								if (input.IsRightPressed())
+								{
+									selectedPart.pos.X += editor_option_adjust_speed;
+									editor_option_adjust_speed += 0.1f;
+								}
+								if (input.IsDownPressed())
+								{
+									selectedPart.pos.Y += editor_option_adjust_speed;
+									editor_option_adjust_speed += 0.1f;
+								}
+								if (input.IsUpPressed())
+								{
+									selectedPart.pos.Y -= editor_option_adjust_speed;
+									editor_option_adjust_speed += 0.1f;
+								}
+								break;
+							case 1:
+								if (input.IsDownPressed() || input.IsRightPressed())
+								{
+									selectedPart.rot += editor_option_adjust_speed;
+									editor_option_adjust_speed += 0.01f;
+								}
+								if (input.IsUpPressed() || input.IsLeftPressed())
+								{
+									selectedPart.rot -= editor_option_adjust_speed;
+									editor_option_adjust_speed += 0.01f;
+								}
+								break;
+							case 2:
+								if (input.IsRightPressed())
+								{
+									selectedPart.scale.X += editor_option_adjust_speed;
+									editor_option_adjust_speed += 0.01f;
+								}
+								if (input.IsLeftPressed())
+								{
+									selectedPart.scale.X -= editor_option_adjust_speed;
+									editor_option_adjust_speed += 0.01f;
+								}
+								if (input.IsDownPressed())
+								{
+									selectedPart.scale.Y += editor_option_adjust_speed;
+									editor_option_adjust_speed += 0.01f;
+								}
+								if (input.IsUpPressed())
+								{
+									selectedPart.scale.Y -= editor_option_adjust_speed;
+									editor_option_adjust_speed += 0.01f;
+								}
+								break;
+							case 3:
+								if (input.IsDownPressed() || input.IsRightPressed())
+								{
+									selectedPart.col.R += 1;
+								}
+								if (input.IsUpPressed() || input.IsLeftPressed())
+								{
+									selectedPart.col.R -= 1;
+								}
+								break;
+							case 4:
+								if (input.IsDownPressed() || input.IsRightPressed())
+								{
+									selectedPart.col.G += 1;
+								}
+								if (input.IsUpPressed() || input.IsLeftPressed())
+								{
+									selectedPart.col.G -= 1;
+								}
+								break;
+							case 5:
+								if (input.IsDownPressed() || input.IsRightPressed())
+								{
+									selectedPart.col.B += 1;
+								}
+								if (input.IsUpPressed() || input.IsLeftPressed())
+								{
+									selectedPart.col.B -= 1;
+								}
+								break;
+						}
+						selectedPose.sprites[editor_current_part_index] = selectedPart;
+						if (input.BackspacePressed()) editor_option_selected = false;
+						if (input.EnterPressed())
+						{
+							for (int i = 0; i < selectedPose.sprites.Count; ++i)
+							{
+								System.Console.WriteLine("anim.AddSpriteInfo(" + selectedPose.sprites[i].pos.X
+									+ "f," + selectedPose.sprites[i].pos.Y
+									+ "f," + selectedPose.sprites[i].scale.X
+									+ "f," + selectedPose.sprites[i].scale.Y
+									+ "f," + selectedPose.sprites[i].rot
+									+ "f," + selectedPose.sprites[i].col.R
+									+ "f," + selectedPose.sprites[i].col.G
+									+ "f," + selectedPose.sprites[i].col.B
+									+ "f);");
+							}
+							//anim.AddSpriteInfo(-2f, -15f, 0.5f, 0, 0, 1f, 1f);//head
+						}
+					}
+		}
+
+		/// //////////////////////////////////////////////////////
+		///                EDITOR STUFF End
+		/// //////////////////////////////////////////////////////
+		#endregion
     }
 }

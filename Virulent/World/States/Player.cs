@@ -168,17 +168,16 @@ namespace Virulent.World.States
             return collider;
         }
 
-        public override void CollideBlock(Entity e, Block b, float collideTime, Vector2 pushOut)
+		public override void CollideBlock(Entity e, Block b, Collider.CollisionInfo info)
         {
-            e.vel.X = 0;
-            e.vel.Y = 0;
-            e.pos = e.ppos + ((e.pos - e.ppos) * collideTime);
-            e.pos += pushOut * 0.1f;
+            e.pos = e.ppos + ((e.pos - e.ppos) * info.collideTime);
+			e.pos += info.pushOut;
+			e.pos += info.slide;
+			e.vel = Collider.GetVelBounce(e.vel, info.wall, 0.8f, 0f);
 
             collider.pos = e.pos;
             collider.ppos = e.ppos;
             b.OnCollide(e);
-            //Debug.WriteLine(pushOut + " " + collideTime);
         }
 
         public override void PositionSprites(Entity e, GameTime gameTime)

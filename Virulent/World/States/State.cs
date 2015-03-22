@@ -43,11 +43,11 @@ namespace Virulent.World.States
             return null;
         }
 
-        public virtual void CollideBlock(Entity e, Block b, float collideTime, Vector2 pushOut)
+		public virtual void CollideBlock(Entity e, Block b, Collider.CollisionInfo info)
         {
         }
 
-        public virtual void CollideEntity(Entity e, Entity other, float collideTime, Vector2 pushOut)
+		public virtual void CollideEntity(Entity e, Entity other, Collider.CollisionInfo info)
         {
         }
     }
