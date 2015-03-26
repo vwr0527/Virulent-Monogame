@@ -145,13 +145,14 @@ namespace Virulent.World.States
         int jumpHeld = 0;
         bool alreadyJumped = false;
         int jumpCoolDown = 6;
+        int jumpAngle = 0;
 
         public override void UpdateEntity(Entity e, GameTime gameTime, InputManager inputMan)
         {
             //Pose.RunEditor(inputMan);
 
             e.vel.X += 0.0001f * (float)(rand.NextDouble() - 0.5) * (float)(gameTime.ElapsedGameTime.Milliseconds);
-            e.vel.Y += 0.008f * (float)(gameTime.ElapsedGameTime.Milliseconds);
+            e.vel.Y += 0.01f * (float)(gameTime.ElapsedGameTime.Milliseconds);
 
             if (inputMan.MoveLeftPressed())
 			{
@@ -182,49 +183,72 @@ namespace Virulent.World.States
 				--jumpCoolDown;
 			if (inputMan.IsJumpPressed() || inputMan.JumpReleased())
 			{
-				if (jumpHeld > 5)
-					jumpHeld = 5;
-				if (jumpCoolDown > 0)
+				if (jumpHeld > 10)
+                    jumpHeld = 10;
+                if (jumpCoolDown > 0)
+                {
                     jumpHeld = 0;
+                    jumpAngle = 0;
+                }
 
-                float jumpStrength = (jumpHeld + 5)*(jumpHeld + 5) / 100.0f;
+                float jumpStrength = (jumpHeld + 2)*(jumpHeld + 2) / 144.0f;
 
                 if (bottom_left_touching == 1 || bottom_right_touching == 1)
                 {
-                    jumpHeld = 5;
+                    jumpHeld = 10;
                     if (bottom_left_touching == 1 && inputMan.MoveRightPressed())
                         jumpStrength = 0.7f;
                     if (bottom_right_touching == 1 && inputMan.MoveLeftPressed())
                         jumpStrength = 0.7f;
                 }
 
-                if (jumpHeld >= 5 || (jumpHeld > 0 && inputMan.JumpReleased()))
+                if (jumpHeld >= 10 || (jumpHeld > 0 && inputMan.JumpReleased()))
                 {
                     if (jumpCoolDown == 0)
                     {
                         alreadyJumped = true;
                     }
-                    jumpCoolDown = 10;
+                    jumpCoolDown = 12;
                     jumpHeld = 0;
 				}
 				if (bottom_touching > 0)
 				{
-					++jumpHeld;
+                    ++jumpHeld;
+                    if (inputMan.MoveRightPressed())
+                    {
+                        jumpAngle++;
+                    }
+                    if (inputMan.MoveLeftPressed())
+                    {
+                        jumpAngle--;
+                    }
+                    if (inputMan.MoveUpPressed())
+                    {
+                        if (jumpAngle > 6)
+                            jumpAngle--;
+                        if (jumpAngle < -6)
+                            jumpAngle++;
+                    }
 					if (alreadyJumped)
-					{
-						e.vel.Y -= 5 * jumpStrength;
+                    {
+                        e.vel.Y -= (6 - (Math.Abs(jumpAngle)/8f)) * jumpStrength;
+                        e.vel.X += (float)(jumpAngle) / 4.5f;
+
+                        jumpAngle = 0;
 					}
 				}
                 if (bottom_left_touching > 0)
 				{
-					jumpHeld += 1;
+                    jumpHeld += 1;
+                    e.vel.X -= 0.2f;
+                    e.vel.Y -= 0.1f;
 					if (alreadyJumped)
                     {
-                        e.vel.X += 0.1f * jumpStrength;
-                        e.vel.Y -= 5 * jumpStrength;
+                        e.vel.X += 1.1f * jumpStrength;
+                        e.vel.Y -= 4 * jumpStrength;
 						if (inputMan.MoveRightPressed())
 						{
-                            e.vel.X += 4 * jumpStrength;
+                            e.vel.X += 2.0f * jumpStrength;
 						}
 						else if (inputMan.MoveLeftPressed())
 						{
@@ -235,24 +259,29 @@ namespace Virulent.World.States
                 if (bottom_right_touching > 0)
                 {
                     jumpHeld += 1;
+                    e.vel.X += 0.2f;
+                    e.vel.Y -= 0.1f;
 					if (alreadyJumped)
                     {
-                        e.vel.X -= 0.1f * jumpStrength;
-                        e.vel.Y -= 5 * jumpStrength;
+                        e.vel.X -= 1.1f * jumpStrength;
+                        e.vel.Y -= 4 * jumpStrength;
 						if (inputMan.MoveRightPressed())
 						{
-							e.vel.X += 1.5f * jumpStrength;
+                            e.vel.X += 1.5f * jumpStrength;
+                            e.vel.Y += 1 * jumpStrength;
 						}
 						else if (inputMan.MoveLeftPressed())
 						{
-                            e.vel.X -= 4 * jumpStrength;
+                            e.vel.X -= 2.0f * jumpStrength;
+                            e.vel.Y += 1 * jumpStrength;
 						}
 					}
 				}
 			}
 			else
 			{
-				jumpHeld = 0;
+                jumpHeld = 0;
+                jumpAngle = 0;
 			}
 
 			e.vel.X *= 0.995f;
@@ -275,6 +304,8 @@ namespace Virulent.World.States
 			if (bottom_touching > 0) --bottom_touching;
             if (bottom_left_touching > 0)
             {
+                e.vel.X -= 0.1f;
+                e.vel.Y -= 0.05f;
                 //pull self up ledge
                 if (inputMan.MoveLeftPressed())
                 {
@@ -285,6 +316,8 @@ namespace Virulent.World.States
             }
             if (bottom_right_touching > 0) 
             {
+                e.vel.X += 0.1f;
+                e.vel.Y -= 0.05f;
                 //pull self up ledge
                 if (inputMan.MoveRightPressed())
                 {
@@ -316,11 +349,11 @@ namespace Virulent.World.States
 			{
 				if (info.wallHit == 2)
 				{
-					bottom_left_touching = 2;
+					bottom_left_touching = 3;
 				}
 				else if (info.wallHit == 1)
 				{
-					bottom_right_touching = 2;
+					bottom_right_touching = 3;
 				}
 			}
 			else if (info.direction == -1)
