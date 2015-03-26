@@ -55,12 +55,10 @@ namespace Virulent.World.Collision
             //We find the lowest amount of time spent outside for collisions both ways.
             //That amount of time is your soonest collision time.
 			collisionInfo.collideTime = 1;
-			collisionInfo.slide *= -1;
+			static_hitDirection = 1;
 			collideOneWay(this, other);
-			collisionInfo.pushOut *= -1;
-			collisionInfo.slide *= -1;
+			static_hitDirection = -1;
 			collideOneWay(other, this);
-			collisionInfo.pushOut *= -1;
 
 			return collisionInfo;
         }
@@ -85,6 +83,7 @@ namespace Virulent.World.Collision
                     else
                         wallEnd = b.pts[j + 1];
 
+					static_wallHit = j;
                     CollisionInfo thisCollisionInfo = get_line_intersection(lineStart.X, lineStart.Y, lineEnd.X, lineEnd.Y, wallStart.X, wallStart.Y, wallEnd.X, wallEnd.Y);
 					if (thisCollisionInfo.didCollide && thisCollisionInfo.collideTime < collisionInfo.collideTime)
                     {
@@ -177,6 +176,9 @@ namespace Virulent.World.Collision
             return new Vector2(rotatedX,rotatedY);
         }
 
+		public static int static_wallHit = 0;
+		public static float static_hitDirection = 0;
+
         public struct CollisionInfo
         {
             public Vector2 point;
@@ -185,8 +187,12 @@ namespace Virulent.World.Collision
 			public Vector2 wall;
 			public float collideTime;
 			public Vector2 pushOut;
+			public int wallHit;
+			public float direction;
 			public CollisionInfo(Vector2 ip, Vector2 endp, Vector2 w, float t)
 			{
+				direction = static_hitDirection;
+				wallHit = static_wallHit;
 				point = ip;
 				didCollide = true;
 				wall = Vector2.Normalize(w);
@@ -196,8 +202,9 @@ namespace Virulent.World.Collision
 				pushOut.X = -pushOut.Y;
 				pushOut.Y = temp;
 				pushOut *= 0.1f;
+				pushOut *= direction;
 				Vector2 leftOver = endp - ip;
-				slide = wall * Vector2.Dot(leftOver, wall);
+				slide = wall * Vector2.Dot(leftOver, wall) * -direction;
 			}
         }
 

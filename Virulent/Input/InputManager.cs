@@ -83,6 +83,14 @@ namespace Virulent.Input
 		{
 			return currentKeyState.IsKeyDown(Keys.Space) && previousKeyState.IsKeyUp(Keys.Space);
 		}
+		public bool IsJumpPressed()
+		{
+			return currentKeyState.IsKeyDown(Keys.Space);
+		}
+		public bool JumpReleased()
+		{
+			return currentKeyState.IsKeyUp(Keys.Space) && previousKeyState.IsKeyDown(Keys.Space);
+		}
 
         public bool EnterPressed()
         {

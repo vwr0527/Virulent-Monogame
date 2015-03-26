@@ -109,11 +109,30 @@ namespace Virulent.World.States
             anim.AddSpriteInfo(24.0f, 18.6f, 0.22f, 0.7f, 0, 1, 1);
             anim.AddSpriteInfo(-25.3f, 18f, 0.22f, 2.0f, 0, 1, 1);
 
-            anim.currentPose = anim.poseList["standing"];
-            anim.nextPose = anim.poseList["ready"];
+			anim.CreatePose("prejump");
+			anim.AddSpriteInfo(1f,-7.399999f,0.5f,0.5f,0.1700001f,0f,255f,255f);
+			anim.AddSpriteInfo(-1.099999f,6.099999f,0.4f,0.4f,0.21f,51f,255f,127f);
+			anim.AddSpriteInfo(-2.3f,18.9f,0.4f,0.4f,0f,0f,255f,255f);
+			anim.AddSpriteInfo(-2.8f,26.6f,0.39f,0.39f,-0.7499999f,0f,255f,255f);
+			anim.AddSpriteInfo(-5f,38f,0.5f,0.5f,0.5499999f,0f,255f,255f);
+			anim.AddSpriteInfo(-8.499999f,46f,0.4f,0.4f,3.14f,0f,255f,255f);
+			anim.AddSpriteInfo(7.8f,25.1f,0.45f,0.45f,-0.8699999f,0f,255f,255f);
+			anim.AddSpriteInfo(10.9f,39.3f,0.5f,0.5f,0.1900001f,0f,255f,255f);
+			anim.AddSpriteInfo(11.1f,46f,0.4f,0.4f,3.14f,0f,255f,255f);
+			anim.AddSpriteInfo(-15.3f,4.8f,0.36f,0.36f,0.6499999f,0f,255f,255f);
+			anim.AddSpriteInfo(-20.3f,13f,0.31f,0.31f,0f,0f,255f,255f);
+			anim.AddSpriteInfo(11f,5.6f,0.36f,0.36f,-0.3f,0f,255f,255f);
+			anim.AddSpriteInfo(16.3f,15.8f,0.31f,0.31f,-0.8399999f,0f,255f,251f);
+			anim.AddSpriteInfo(-10.1f,-0.9f,0.33f,0.33f,-0.3f,51f,255f,127f);
+			anim.AddSpriteInfo(9f,2.5f,0.33f,0.33f,0.2f,51f,255f,127f);
+			anim.AddSpriteInfo(20f,20f,0.22f,0.22f,2.189999f,0f,255f,255f);
+			anim.AddSpriteInfo(-22.2f,19f,0.22f,0.22f,1.6f,0f,255f,255f);
 
-            Pose.ActivateEditor();
-            Pose.SelectPoseToEdit(anim.currentPose);
+            anim.currentPose = anim.poseList["standing"];
+			anim.nextPose = anim.poseList["prejump"];
+
+            //Pose.ActivateEditor();
+            //Pose.SelectPoseToEdit(anim.currentPose);
         }
 
         public override void InitEntity(Entity e)
@@ -123,39 +142,128 @@ namespace Virulent.World.States
             e.sprite.linkedSprite.Scale = 0.1f;
         }
 
+        int jumpHeld = 0;
+        bool alreadyJumped = false;
+        int jumpCoolDown = 6;
+
         public override void UpdateEntity(Entity e, GameTime gameTime, InputManager inputMan)
         {
-            Pose.RunEditor(inputMan);
+            //Pose.RunEditor(inputMan);
 
             e.vel.X += 0.0001f * (float)(rand.NextDouble() - 0.5) * (float)(gameTime.ElapsedGameTime.Milliseconds);
             e.vel.Y += 0.008f * (float)(gameTime.ElapsedGameTime.Milliseconds);
 
             if (inputMan.MoveLeftPressed())
-            {
-                e.vel.X -= 0.01f * (float)(gameTime.ElapsedGameTime.Milliseconds);
+			{
+				if (bottom_touching > 0 && jumpHeld <= 1)
+				{
+					e.vel.X -= 0.012f * (float)(gameTime.ElapsedGameTime.Milliseconds);
+				}
+                e.vel.X -= 0.005f * (float)(gameTime.ElapsedGameTime.Milliseconds);
             }
-            if (inputMan.MoveRightPressed())
-            {
-                e.vel.X += 0.01f * (float)(gameTime.ElapsedGameTime.Milliseconds);
+			if (inputMan.MoveRightPressed())
+			{
+				if (bottom_touching > 0 && jumpHeld <= 1)
+				{
+					e.vel.X += 0.012f * (float)(gameTime.ElapsedGameTime.Milliseconds);
+				}
+				e.vel.X += 0.005f * (float)(gameTime.ElapsedGameTime.Milliseconds);
             }
             if (inputMan.MoveUpPressed())
             {
-                e.vel.Y -= 0.01f * (float)(gameTime.ElapsedGameTime.Milliseconds);
+                e.vel.Y -= 0.002f * (float)(gameTime.ElapsedGameTime.Milliseconds);
             }
             if (inputMan.MoveDownPressed())
             {
-                e.vel.Y += 0.01f * (float)(gameTime.ElapsedGameTime.Milliseconds);
-            }
-			if (inputMan.JumpPressed()) 
-			{
-				e.vel.Y = -5;
+                e.vel.Y += 0.002f * (float)(gameTime.ElapsedGameTime.Milliseconds);
 			}
+			alreadyJumped = false;
+			if (jumpCoolDown > 0)
+				--jumpCoolDown;
+			if (inputMan.IsJumpPressed() || inputMan.JumpReleased())
+			{
+				if (jumpHeld > 5)
+					jumpHeld = 5;
+				if (jumpCoolDown > 0)
+                    jumpHeld = 0;
+
+                float jumpStrength = (jumpHeld + 5)*(jumpHeld + 5) / 100.0f;
+
+                if (bottom_left_touching == 1 || bottom_right_touching == 1)
+                {
+                    jumpHeld = 5;
+                    if (bottom_left_touching == 1 && inputMan.MoveRightPressed())
+                        jumpStrength = 0.7f;
+                    if (bottom_right_touching == 1 && inputMan.MoveLeftPressed())
+                        jumpStrength = 0.7f;
+                }
+
+                if (jumpHeld >= 5 || (jumpHeld > 0 && inputMan.JumpReleased()))
+                {
+                    if (jumpCoolDown == 0)
+                    {
+                        alreadyJumped = true;
+                    }
+                    jumpCoolDown = 10;
+                    jumpHeld = 0;
+				}
+				if (bottom_touching > 0)
+				{
+					++jumpHeld;
+					if (alreadyJumped)
+					{
+						e.vel.Y -= 5 * jumpStrength;
+					}
+				}
+                if (bottom_left_touching > 0)
+				{
+					jumpHeld += 1;
+					if (alreadyJumped)
+                    {
+                        e.vel.X += 0.1f * jumpStrength;
+                        e.vel.Y -= 5 * jumpStrength;
+						if (inputMan.MoveRightPressed())
+						{
+                            e.vel.X += 4 * jumpStrength;
+						}
+						else if (inputMan.MoveLeftPressed())
+						{
+							e.vel.X -= 1.5f * jumpStrength;
+						}
+					}
+				}
+                if (bottom_right_touching > 0)
+                {
+                    jumpHeld += 1;
+					if (alreadyJumped)
+                    {
+                        e.vel.X -= 0.1f * jumpStrength;
+                        e.vel.Y -= 5 * jumpStrength;
+						if (inputMan.MoveRightPressed())
+						{
+							e.vel.X += 1.5f * jumpStrength;
+						}
+						else if (inputMan.MoveLeftPressed())
+						{
+                            e.vel.X -= 4 * jumpStrength;
+						}
+					}
+				}
+			}
+			else
+			{
+				jumpHeld = 0;
+			}
+
+			e.vel.X *= 0.995f;
+			e.vel.Y *= 0.995f;
 
             e.pos += e.vel * (float)(gameTime.ElapsedGameTime.Milliseconds) * 0.1f;
             if (e.pos.Y > 200.0f)
             {
                 e.pos.Y = 200.0f;
-                e.vel.Y *= -0.5f;
+                e.vel.Y *= 0f;
+				bottom_touching = 4;
             }
             e.age += gameTime.ElapsedGameTime;
             e.sprite.col = new Color(0, 255, 0);
@@ -163,6 +271,29 @@ namespace Virulent.World.States
             collider.ppos = e.ppos;
             collider.pos = e.pos;
             //if (e.age > maxAge) e.dead = true;
+
+			if (bottom_touching > 0) --bottom_touching;
+            if (bottom_left_touching > 0)
+            {
+                //pull self up ledge
+                if (inputMan.MoveLeftPressed())
+                {
+                    e.vel.X -= 0.1f;
+                    e.vel.Y -= 0.2f;
+                }
+                --bottom_left_touching;
+            }
+            if (bottom_right_touching > 0) 
+            {
+                //pull self up ledge
+                if (inputMan.MoveRightPressed())
+                {
+                    e.vel.X += 0.1f;
+                    e.vel.Y -= 0.2f;
+                }
+                --bottom_right_touching;
+            }
+			//System.Console.WriteLine(bottom_touching + " " + bottom_left_touching + " " + bottom_right_touching);
         }
 
         public override Collider GetCollider(Entity e)
@@ -172,12 +303,30 @@ namespace Virulent.World.States
             return collider;
         }
 
+		int bottom_touching = 0;
+		int bottom_left_touching = 0;
+		int bottom_right_touching = 0;
 		public override void CollideBlock(Entity e, Block b, Collider.CollisionInfo info)
         {
             e.pos = e.ppos + ((e.pos - e.ppos) * info.collideTime);
 			e.pos += info.pushOut;
 			e.pos += info.slide;
-			e.vel = Collider.GetVelBounce(e.vel, info.wall, 1f, 0f);
+			e.vel = Collider.GetVelBounce(e.vel, info.wall, 0.92f, 0f);
+			if (info.direction == 1)
+			{
+				if (info.wallHit == 2)
+				{
+					bottom_left_touching = 2;
+				}
+				else if (info.wallHit == 1)
+				{
+					bottom_right_touching = 2;
+				}
+			}
+			else if (info.direction == -1)
+			{
+				bottom_touching = 2;
+			}
 
             collider.pos = e.pos;
             collider.ppos = e.ppos;
@@ -186,13 +335,14 @@ namespace Virulent.World.States
 
         public override void PositionSprites(Entity e, GameTime gameTime)
         {
-            float ratio = (float)((Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 100.0) + 1.0) / 2.0);
-            System.Console.WriteLine(ratio);
+            //float ratio = (float)((Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 100.0) + 1.0) / 2.0);
+            //System.Console.WriteLine(ratio);
+			float ratio = jumpHeld / 9.0f;
             anim.DoTweenPose(e, ratio);
-            anim.currentPose.ImitateEditorPose();
-            Pose.SetEditorPosePosSize(e.pos, new Vector2(100, 100));
+            //anim.currentPose.ImitateEditorPose();
+            //Pose.SetEditorPosePosSize(e.pos, new Vector2(100, 100));
 
-            anim.DoPose(e);
+            //anim.DoPose(e);
         }
 
         public override void DrawPoly(Entity e, GraphicsManager graphMan, GameTime gameTime)
