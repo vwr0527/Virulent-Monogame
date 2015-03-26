@@ -74,6 +74,7 @@ namespace Virulent.World.Collision
                 lineEnd += a.pts[i];
                 lineEnd -= b.pos;
 
+                static_ptHit = i;
                 for (int j = 0; j < b.pts.Count; ++j)
                 {
                     Vector2 wallStart = b.pts[j];
@@ -176,7 +177,8 @@ namespace Virulent.World.Collision
             return new Vector2(rotatedX,rotatedY);
         }
 
-		public static int static_wallHit = 0;
+        public static int static_wallHit = 0;
+        public static int static_ptHit = 0;
 		public static float static_hitDirection = 0;
 
         public struct CollisionInfo
@@ -188,11 +190,13 @@ namespace Virulent.World.Collision
 			public float collideTime;
 			public Vector2 pushOut;
 			public int wallHit;
+            public int ptHit;
 			public float direction;
 			public CollisionInfo(Vector2 ip, Vector2 endp, Vector2 w, float t)
 			{
-				direction = static_hitDirection;
-				wallHit = static_wallHit;
+                direction = static_hitDirection;
+                wallHit = static_wallHit;
+                ptHit = static_ptHit;
 				point = ip;
 				didCollide = true;
 				wall = Vector2.Normalize(w);
