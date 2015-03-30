@@ -71,7 +71,7 @@ namespace Virulent.Graphics
             cam1.CalcMatrix(graphicsDevice.Viewport);
             for (int j = 0; j < numCameras; ++j)
             {
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, cam1.matrix);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, cam1.matrix);
                 for (int i = 0; i < worldSprites.Size(); ++i)
                 {
                     worldSprites.ElementAt(i).DrawWorld(graphicsDevice, spriteBatch);

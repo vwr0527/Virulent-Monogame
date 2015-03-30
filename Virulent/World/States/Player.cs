@@ -389,13 +389,18 @@ namespace Virulent.World.States
             collider.ppos = e.ppos;
             b.OnCollide(e);
         }
-
+        public bool facingLeft = false;
         public override void PositionSprites(Entity e, GameTime gameTime)
         {
             //float ratio = (float)((Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 100.0) + 1.0) / 2.0);
             //System.Console.WriteLine(ratio);
 			float ratio = jumpHeld / 9.0f;
             anim.DoTweenPose(e, ratio);
+            if (e.vel.X > 0.1f)
+                facingLeft = false;
+            else if (e.vel.X < -0.1f)
+                facingLeft = true;
+            anim.Facing(e, facingLeft);
             //anim.currentPose.ImitateEditorPose();
             //Pose.SetEditorPosePosSize(e.pos, new Vector2(100, 100));
 

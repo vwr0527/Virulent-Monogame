@@ -58,6 +58,23 @@ namespace Virulent.World.States.Animations
             }
         }
 
+        public void Facing(Entity e, bool faceLeft)
+        {
+            if (!faceLeft)
+                return;
+            if (currentPose == null || nextPose == null) return;
+            SpriteElement cur = e.sprite;
+            int i = 0;
+            while (cur != null)
+            {
+                cur.scale.X *= -1;
+                cur.pos.X = e.pos.X - (cur.pos.X - e.pos.X);
+                cur.rotation *= -1;
+                i++;
+                cur = cur.linkedSprite;
+            }
+        }
+
         public void CreatePose(string name)
         {
             Pose p = new Pose();

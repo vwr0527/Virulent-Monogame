@@ -1,0 +1,9 @@
+C:\Users\Victor\Documents\Projects\Virulent\Virulent\bin\Release\Virulent.exe
+C:\Users\Victor\Documents\Projects\Virulent\Virulent\bin\Release\Virulent.pdb
+C:\Users\Victor\Documents\Projects\Virulent\Virulent\bin\Release\MonoGame.Framework.dll
+C:\Users\Victor\Documents\Projects\Virulent\Virulent\bin\Release\OpenTK.dll
+C:\Users\Victor\Documents\Projects\Virulent\Virulent\bin\Release\Tao.Sdl.dll
+C:\Users\Victor\Documents\Projects\Virulent\Virulent\bin\Release\Lidgren.Network.dll
+C:\Users\Victor\Documents\Projects\Virulent\Virulent\obj\x86\Release\Virulent.csprojResolveAssemblyReference.cache
+C:\Users\Victor\Documents\Projects\Virulent\Virulent\obj\x86\Release\Virulent.exe
+C:\Users\Victor\Documents\Projects\Virulent\Virulent\obj\x86\Release\Virulent.pdb
