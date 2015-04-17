@@ -418,7 +418,9 @@ namespace Virulent.World.States.Animations
 						selectedPose.sprites[editor_current_part_index] = selectedPart;
 						if (input.BackspacePressed()) editor_option_selected = false;
 						if (input.EnterPressed())
-						{
+                        {
+                            System.Console.WriteLine("anim.CreatePose(  );");
+
 							for (int i = 0; i < selectedPose.sprites.Count; ++i)
 							{
 								System.Console.WriteLine("anim.AddSpriteInfo(" + selectedPose.sprites[i].pos.X

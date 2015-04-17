@@ -6,16 +6,17 @@
       <File FileName="World\Collision\Collider.cs" Line="1" Column="1" />
       <File FileName="World\Collision\CollisionManager.cs" Line="1" Column="1" />
       <File FileName="World\Collision\EntityCollisionInfo.cs" Line="1" Column="1" />
-      <File FileName="World\States\Player.cs" Line="403" Column="40" />
+      <File FileName="World\States\Player.cs" Line="173" Column="27" />
       <File FileName="World\States\State.cs" Line="1" Column="1" />
       <File FileName="World\Entity.cs" Line="1" Column="1" />
-      <File FileName="Input\InputManager.cs" Line="1" Column="1" />
+      <File FileName="Input\InputManager.cs" Line="36" Column="10" />
       <File FileName="util\RecycleArray.cs" Line="1" Column="1" />
-      <File FileName="World\States\Animations\Pose.cs" Line="97" Column="9" />
-      <File FileName="World\States\Animations\Animator.cs" Line="72" Column="36" />
+      <File FileName="World\States\Animations\Pose.cs" Line="422" Column="78" />
+      <File FileName="World\States\Animations\Animator.cs" Line="35" Column="9" />
       <File FileName="c:\Users\Victor\Documents\Projects\Virulent\Virulent\Graphics\SpriteElement.cs" Line="1" Column="1" />
       <File FileName="World\Levels\TutorialLevel.cs" Line="1" Column="1" />
-      <File FileName="Graphics\GraphicsManager.cs" Line="74" Column="178" />
+      <File FileName="Graphics\GraphicsManager.cs" Line="1" Column="1" />
+      <File FileName="Graphics\Camera.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
