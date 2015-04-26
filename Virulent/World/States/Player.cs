@@ -132,9 +132,9 @@ namespace Virulent.World.States
 			anim.AddSpriteInfo(-22.2f,19f,0.22f,0.22f,1.6f,0f,255f,255f);
 
             anim.CreatePose("jumpup1");
-            anim.AddSpriteInfo(-2f,-20.5f,0.5f,0.5f,0f,0f,255f,255f);
-            anim.AddSpriteInfo(-1.4f,-7.3f,0.4f,0.4f,0.16f,51f,255f,127f);
-            anim.AddSpriteInfo(-1.1f,5.899999f,0.31f,0.4f,-0.3f,9f,255f,255f);
+            anim.AddSpriteInfo(-4.7f,-21f,0.5f,0.5f,-0.51f,0f,255f,255f);
+            anim.AddSpriteInfo(-3.2f,-7.6f,0.4f,0.4f,0.009999998f,255f,255f,255f);
+            anim.AddSpriteInfo(-1.1f,5.899999f,0.31f,0.4f,-0.3f,255f,255f,255f);
             anim.AddSpriteInfo(-4.300001f,17.9f,0.45f,0.45f,0f,0f,255f,255f);
             anim.AddSpriteInfo(-6f,36.3f,0.5f,0.5f,0f,0f,255f,255f);
             anim.AddSpriteInfo(-5f,51.1f,0.4f,0.4f,3.919999f,0f,255f,255f);
@@ -142,13 +142,72 @@ namespace Virulent.World.States
             anim.AddSpriteInfo(12.5f,21.3f,0.5f,0.5f,0.2f,0f,255f,255f);
             anim.AddSpriteInfo(11f,30.4f,0.4f,0.4f,4.189999f,0f,255f,255f);
             anim.AddSpriteInfo(-11.1f,-3.500001f,0.36f,0.36f,0.1f,0f,255f,255f);
-            anim.AddSpriteInfo(-15.49999f,0.8999994f,0.41f,0.19f,2.029999f,0f,255f,255f);
+            anim.AddSpriteInfo(-14.79999f,4.5f,0.41f,0.19f,6.509996f,0f,255f,255f);
             anim.AddSpriteInfo(10.8f,-2.400001f,0.36f,0.36f,-0.3f,0f,255f,255f);
-            anim.AddSpriteInfo(13f,1.3f,0.41f,0.19f,-1.99f,0f,255f,255f);
-            anim.AddSpriteInfo(-10.6f,-11.8f,0.33f,0.33f,-0.3f,51f,255f,127f);
-            anim.AddSpriteInfo(6.9f,-10.3f,0.33f,0.33f,0.2f,51f,255f,127f);
-            anim.AddSpriteInfo(16.9f,0.5999966f,0.22f,0.22f,0.7500002f,0f,255f,255f);
-            anim.AddSpriteInfo(-18.5f,-3.400002f,0.22f,0.2500001f,5.780001f,0f,255f,255f);
+            anim.AddSpriteInfo(13f,4.9f,0.41f,0.19f,-0.9400004f,0f,255f,255f);
+            anim.AddSpriteInfo(-10.6f,-11.8f,0.33f,0.33f,-0.3f,255f,255f,255f);
+            anim.AddSpriteInfo(6.9f,-10.3f,0.33f,0.33f,0.2f,255f,255f,255f);
+            anim.AddSpriteInfo(16.3f,8.999997f,0.22f,0.22f,1.95f,0f,255f,255f);
+            anim.AddSpriteInfo(-18.5f,8.599999f,0.22f,0.2500001f,3.989999f,0f,255f,255f);
+
+
+            anim.CreatePose("jumpup2");
+            anim.AddSpriteInfo(-4.7f,-22.5f,0.5f,0.5f,-0.1200001f,0f,255f,255f);
+            anim.AddSpriteInfo(-4.3f,-8.599999f,0.4f,0.4f,0.06999999f,255f,255f,255f);
+            anim.AddSpriteInfo(-2.2f,4.5f,0.31f,0.4f,-0.2f,255f,255f,255f);
+            anim.AddSpriteInfo(-3.200001f,15.8f,0.45f,0.45f,-0.16f,0f,255f,255f);
+            anim.AddSpriteInfo(-4f,33.9f,0.5f,0.5f,0f,0f,255f,255f);
+            anim.AddSpriteInfo(-4.1f,45.4f,0.4f,0.4f,3.679999f,0f,255f,255f);
+            anim.AddSpriteInfo(6.6f,8.499997f,0.45f,0.37f,-0.9400001f,0f,255f,255f);
+            anim.AddSpriteInfo(8.2f,21.7f,0.5f,0.5f,0.23f,0f,255f,255f);
+            anim.AddSpriteInfo(5.5f,32.2f,0.4f,0.4f,3.829999f,0f,255f,255f);
+            anim.AddSpriteInfo(-16.5f,-8.000002f,0.36f,0.36f,0.6499999f,0f,255f,255f);
+            anim.AddSpriteInfo(-21.09999f,-5.2f,0.3100001f,0.12f,4.599999f,0f,255f,255f);
+            anim.AddSpriteInfo(12.6f,-8.099999f,0.36f,0.36f,-1.14f,0f,255f,255f);
+            anim.AddSpriteInfo(17.8f,-5.899999f,0.41f,0.12f,-2.11f,0f,255f,255f);
+            anim.AddSpriteInfo(-13.3f,-12.8f,0.33f,0.33f,-0.09000003f,255f,255f,255f);
+            anim.AddSpriteInfo(5.1f,-11.6f,0.33f,0.33f,0.2f,255f,255f,255f);
+            anim.AddSpriteInfo(21.2f,-6.600004f,0.22f,0.22f,0.9699998f,0f,255f,255f);
+            anim.AddSpriteInfo(-17.4f,-3.700002f,0.22f,0.2500001f,1.650001f,0f,255f,255f);
+
+            anim.CreatePose( "jumpup3" );
+            anim.AddSpriteInfo(-4.7f,-21.5f,0.5f,0.5f,0.07999989f,0f,255f,255f);
+            anim.AddSpriteInfo(-4.3f,-8.199999f,0.4f,0.4f,0.06999999f,255f,255f,255f);
+            anim.AddSpriteInfo(-3.5f,3.6f,0.31f,0.4f,-0.04000001f,255f,255f,255f);
+            anim.AddSpriteInfo(-0.700001f,10.3f,0.45f,0.45f,-0.8299999f,0f,255f,255f);
+            anim.AddSpriteInfo(-2.6f,23.5f,0.5f,0.5f,0.7899999f,0f,255f,255f);
+            anim.AddSpriteInfo(-6.5f,29.20001f,0.4f,0.4f,3.889999f,0f,255f,255f);
+            anim.AddSpriteInfo(4.4f,11f,0.45f,0.37f,-0.5200002f,0f,255f,255f);
+            anim.AddSpriteInfo(5.799999f,25.7f,0.5f,0.5f,0.1100001f,0f,255f,255f);
+            anim.AddSpriteInfo(5.299999f,37f,0.4f,0.4f,3.849999f,0f,255f,255f);
+            anim.AddSpriteInfo(-14.5f,-9.800002f,0.36f,0.14f,0.03999997f,0f,255f,255f);
+            anim.AddSpriteInfo(-12.59999f,-11f,0.3700001f,0.25f,4.079998f,0f,255f,255f);
+            anim.AddSpriteInfo(9.700001f,-12.2f,0.43f,0.21f,-1.75f,0f,255f,255f);
+            anim.AddSpriteInfo(14.5f,-14.1f,0.41f,0.2f,-2.89f,0f,255f,255f);
+            anim.AddSpriteInfo(-13.3f,-13.8f,0.33f,0.33f,-0.09000003f,255f,255f,255f);
+            anim.AddSpriteInfo(4.400001f,-12.5f,0.33f,0.33f,0.1f,255f,255f,255f);
+            anim.AddSpriteInfo(16.9f,-18.2f,0.22f,0.22f,0.35f,0f,255f,255f);
+            anim.AddSpriteInfo(-7.200013f,-13.7f,0.22f,0.2500001f,0.6500012f,0f,255f,255f);
+
+            anim.CreatePose( "jumpup4" );
+            anim.AddSpriteInfo(-3.8f,-22.1f,0.5f,0.5f,0.3399999f,0f,255f,255f);
+            anim.AddSpriteInfo(-5.3f,-9.599999f,0.4f,0.4f,0.17f,255f,255f,255f);
+            anim.AddSpriteInfo(-5.1f,3.2f,0.31f,0.4f,-0.11f,255f,255f,255f);
+            anim.AddSpriteInfo(2.099999f,6.4f,0.36f,0.4f,-1.34f,0f,255f,255f);
+            anim.AddSpriteInfo(0.1000004f,15.3f,0.5f,0.43f,0.9499998f,0f,255f,255f);
+            anim.AddSpriteInfo(-6.5f,21.00001f,0.4f,0.4f,4.11f,0f,255f,255f);
+            anim.AddSpriteInfo(1.3f,12f,0.45f,0.37f,-0.5200002f,0f,255f,255f);
+            anim.AddSpriteInfo(1.8f,29.2f,0.5f,0.5f,1.41561E-07f,0f,255f,255f);
+            anim.AddSpriteInfo(1.299999f,41.1f,0.4f,0.4f,3.849999f,0f,255f,255f);
+            anim.AddSpriteInfo(-16.3f,-22.40001f,0.35f,0.27f,-3.38f,0f,255f,255f);
+            anim.AddSpriteInfo(-16.19999f,-31.00001f,0.3700001f,0.27f,3.149997f,0f,255f,255f);
+            anim.AddSpriteInfo(9.700001f,-18.8f,0.39f,0.29f,-2.44f,0f,255f,255f);
+            anim.AddSpriteInfo(11.4f,-24.8f,0.34f,0.29f,-3.659999f,0f,255f,255f);
+            anim.AddSpriteInfo(-13.9f,-15.2f,0.33f,0.33f,0.01999996f,255f,255f,255f);
+            anim.AddSpriteInfo(4.400001f,-14f,0.33f,0.33f,0.1f,255f,255f,255f);
+            anim.AddSpriteInfo(9.6f,-30.2f,0.22f,0.22f,-0.4799998f,0f,255f,255f);
+            anim.AddSpriteInfo(-14.20001f,-35.20001f,0.22f,0.2400001f,0.1900014f,0f,255f,255f);
+
 
             anim.currentPose = anim.poseList["standing"];
             anim.nextPose = anim.poseList["prejump"];
@@ -156,7 +215,7 @@ namespace Virulent.World.States
             if (editingPose)
             {
                 Pose.ActivateEditor();
-                Pose.SelectPoseToEdit(anim.currentPose);
+                Pose.SelectPoseToEdit(anim.poseList["jumpup4"]);
             }
         }
 
@@ -419,34 +478,84 @@ namespace Virulent.World.States
         public bool facingLeft = false;
         int landedTime = 0;
         int midairTime = 0;
+        float ratio2 = 0;
         public override void PositionSprites(Entity e, GameTime gameTime)
         {
             //float ratio = (float)((Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 100.0) + 1.0) / 2.0);
             //System.Console.WriteLine(ratio);
             if (bottom_touching > 0)
             {
-                anim.currentPose = anim.poseList["standing"];
-                anim.nextPose = anim.poseList["prejump"];
-                float ratio = jumpHeld / 4.0f;
-                anim.DoTweenPose(e, ratio);
                 midairTime = 0;
                 landedTime += 1;
+                float ratio = jumpHeld / 8.0f;
+                if (landedTime <= 8)
+                {
+                    ratio = 1.0f - (landedTime / 8.0f);
+                }
+                anim.currentPose = anim.poseList["standing"];
+                anim.nextPose = anim.poseList["prejump"];
+                anim.DoTweenPose(e, ratio);
             }
             else
             {
                 midairTime += 1;
                 landedTime = 0;
-                anim.nextPose = anim.poseList["jumpup1"];
-                float ratio = (midairTime * 1.0f) / 4.0f;
+                float ratio = 0;
+                if (e.vel.Y <= -2)
+                {
+                    anim.currentPose = anim.poseList["jumpup1"];
+                    anim.nextPose = anim.poseList["jumpup2"];
+                    ratio = 1.0f + (e.vel.Y + 2.0f);
+                }
+                else if (e.vel.Y <= 0)
+                {
+                    anim.currentPose = anim.poseList["jumpup2"];
+                    anim.nextPose = anim.poseList["jumpup3"];
+                    ratio = 1.0f + (e.vel.Y / 2.0f);
+                }
+                else if (e.vel.Y > 0)
+                {
+                    anim.currentPose = anim.poseList["jumpup3"];
+                    anim.nextPose = anim.poseList["jumpup4"];
+                    ratio = e.vel.Y / 4.0f;
+                }
+                if (ratio < 0)
+                    ratio = 0;
+                if (ratio > 1)
+                    ratio = 1;
                 anim.DoTweenPose(e, ratio);
             }
 
             if (editingPose)
             {
+                /*
                 anim.currentPose.ImitateEditorPose();
                 Pose.SetEditorPosePosSize(e.pos, new Vector2(100, 100));
-
                 anim.DoPose(e);
+                */
+                ///*
+                if (ratio2 > 2.0f)
+                {
+                    anim.currentPose = anim.poseList["jumpup3"];
+                    anim.nextPose = anim.poseList["jumpup4"];
+                    anim.DoTweenPose(e, ratio2 - 2.0f);
+                }
+                else if (ratio2 > 1.0f)
+                {
+                    anim.currentPose = anim.poseList["jumpup2"];
+                    anim.nextPose = anim.poseList["jumpup3"];
+                    anim.DoTweenPose(e, ratio2 - 1.0f);
+                }
+                else if (ratio2 > 0.0f)
+                {
+                    anim.currentPose = anim.poseList["jumpup1"];
+                    anim.nextPose = anim.poseList["jumpup2"];
+                    anim.DoTweenPose(e, ratio2);
+                }
+                ratio2 += 0.1f;
+                if (ratio2 > 3)
+                    ratio2 = 0;
+                //*/
             }
             if (e.vel.X > 0.1f)
                 facingLeft = false;
