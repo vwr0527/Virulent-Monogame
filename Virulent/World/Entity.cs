@@ -16,10 +16,13 @@ namespace Virulent.World
     class Entity
     {
         public Vector2 ppos = new Vector2();
-        public Vector2 pos = new Vector2();
-        public Vector2 vel = new Vector2();
-        public float rot;
-        public float rotvel;
+		public Vector2 pos = new Vector2();
+		public Vector2 vel = new Vector2();
+		public Vector2 pvel = new Vector2();
+		public float rot;
+		public float prot;
+		public float rotvel;
+		public float protvel;
         public TimeSpan age;
 
         public bool dead = false;
@@ -43,6 +46,9 @@ namespace Virulent.World
             if (state != null)
             {
                 ppos = pos;
+				pvel = vel;
+				prot = rot;
+				protvel = rotvel;
                 state.UpdateEntity(this, gameTime, inputMan);
             }
         }

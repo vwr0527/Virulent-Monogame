@@ -132,7 +132,7 @@ namespace Virulent.World.States
 			anim.AddSpriteInfo(-22.2f,19f,0.22f,0.22f,1.6f,0f,255f,255f);
 
             anim.CreatePose("jumpup1");
-            anim.AddSpriteInfo(-4.7f,-21f,0.5f,0.5f,-0.51f,0f,255f,255f);
+            anim.AddSpriteInfo(-4.7f,-21f,0.5f,0.5f,-0.31f,0f,255f,255f);
             anim.AddSpriteInfo(-3.2f,-7.6f,0.4f,0.4f,0.009999998f,255f,255f,255f);
             anim.AddSpriteInfo(-1.1f,5.899999f,0.31f,0.4f,-0.3f,255f,255f,255f);
             anim.AddSpriteInfo(-4.300001f,17.9f,0.45f,0.45f,0f,0f,255f,255f);
@@ -213,9 +213,9 @@ namespace Virulent.World.States
             anim.nextPose = anim.poseList["prejump"];
 
             if (editingPose)
-            {
-                Pose.ActivateEditor();
-                Pose.SelectPoseToEdit(anim.poseList["jumpup4"]);
+			{
+				Pose.ActivateEditor();
+				Pose.SelectPoseToEdit(anim.poseList["jumpup4"]);
             }
         }
 
@@ -229,7 +229,9 @@ namespace Virulent.World.States
         int jumpHeld = 0;
         bool alreadyJumped = false;
         int jumpCoolDown = 6;
-        int jumpAngle = 0;
+		int jumpAngle = 0;
+		int landedTime = 0;
+		int midairTime = 0;
 
         public override void UpdateEntity(Entity e, GameTime gameTime, InputManager inputMan)
         {
@@ -314,37 +316,32 @@ namespace Virulent.World.States
                         jumpCoolDown = 16;
                         jumpHeld = 0;
                     }
-                    if (bottom_touching > 0)
-                    {
-                        ++jumpHeld;
-                        if (inputMan.MoveRightPressed())
-                        {
-                            jumpAngle++;
-                        }
-                        if (inputMan.MoveLeftPressed())
-                        {
-                            jumpAngle--;
-                        }
-                        if (inputMan.MoveUpPressed())
-                        {
-                            int diag = 0;
-                            if (inputMan.MoveLeftPressed() || inputMan.MoveRightPressed())
-                            {
-                                diag = 2;
-                            }
-                            if (jumpAngle > diag)
-                                jumpAngle--;
-                            if (jumpAngle < -diag)
-                                jumpAngle++;
-                        }
-                        if (alreadyJumped)
-                        {
-                            e.vel.Y -= (6 - (Math.Abs(jumpAngle)/3f)) * jumpStrength;
-                            e.vel.X += (float)(jumpAngle) / 2.5f;
+					if (bottom_touching > 0) {
+						++jumpHeld;
+						if (inputMan.MoveRightPressed ()) {
+							jumpAngle++;
+						}
+						if (inputMan.MoveLeftPressed ()) {
+							jumpAngle--;
+						}
+						if (inputMan.MoveUpPressed ()) {
+							int diag = 0;
+							if (inputMan.MoveLeftPressed () || inputMan.MoveRightPressed ()) {
+								diag = 2;
+							}
+							if (jumpAngle > diag)
+								jumpAngle--;
+							if (jumpAngle < -diag)
+								jumpAngle++;
+						}
+						if (alreadyJumped) {
+							e.vel.Y -= (6 - (Math.Abs (jumpAngle) / 3f)) * jumpStrength;
+							e.vel.X += (float)(jumpAngle) / 2.5f;
+							landingAnimation = false;
+							jumpAngle = 0;
+						}
 
-                            jumpAngle = 0;
-                        }
-                    }
+					}
                     if (bottom_left_touching > 0)
                     {
                         jumpHeld += 1;
@@ -423,7 +420,17 @@ namespace Virulent.World.States
             collider.pos = e.pos;
             //if (e.age > maxAge) e.dead = true;
 
-			if (bottom_touching > 0) --bottom_touching;
+			if (bottom_touching > 0)
+			{
+				--bottom_touching;
+				midairTime = 0;
+				landedTime += 1;
+			}
+			else
+			{
+				landedTime = 0;
+				midairTime += 1;
+			}
             if (bottom_left_touching > 0)
             {
                 e.vel.X -= 0.1f;
@@ -476,48 +483,59 @@ namespace Virulent.World.States
             b.OnCollide(e);
         }
         public bool facingLeft = false;
-        int landedTime = 0;
-        int midairTime = 0;
-        float ratio2 = 0;
+		public float landingHardness = 0.0f;
+		public bool landingAnimation = false;
         public override void PositionSprites(Entity e, GameTime gameTime)
         {
             //float ratio = (float)((Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 100.0) + 1.0) / 2.0);
             //System.Console.WriteLine(ratio);
             if (bottom_touching > 0)
             {
-                midairTime = 0;
-                landedTime += 1;
-                float ratio = jumpHeld / 8.0f;
-                if (landedTime <= 8)
+                float ratio = jumpHeld / 4.0f;
+                if (landedTime <= 4)
                 {
-                    ratio = 1.0f - (landedTime / 8.0f);
+                    ratio = 1.0f - (landedTime / 4.0f);
+					if (!alreadyJumped && !landingAnimation)
+					{
+						landingHardness = (Math.Min (1.0f, Math.Max (0, e.pvel.Y / 5.0f)));
+						landingAnimation = true;
+					}
+					if (landingAnimation)
+					{
+						ratio *= landingHardness;
+					}
                 }
-                anim.currentPose = anim.poseList["standing"];
-                anim.nextPose = anim.poseList["prejump"];
-                anim.DoTweenPose(e, ratio);
+				anim.currentPose = anim.poseList ["standing"];
+				anim.nextPose = anim.poseList ["prejump"];
+				anim.DoTweenPose (e, ratio);
             }
             else
             {
-                midairTime += 1;
-                landedTime = 0;
                 float ratio = 0;
-                if (e.vel.Y <= -2)
+                if (e.vel.Y <= -4)
                 {
                     anim.currentPose = anim.poseList["jumpup1"];
                     anim.nextPose = anim.poseList["jumpup2"];
-                    ratio = 1.0f + (e.vel.Y + 2.0f);
+					ratio = 1.0f-((-e.vel.Y/4.0f) - 1.0f);
+					/*
+
+8=1
+4=0
+					 * */
                 }
                 else if (e.vel.Y <= 0)
                 {
                     anim.currentPose = anim.poseList["jumpup2"];
                     anim.nextPose = anim.poseList["jumpup3"];
-                    ratio = 1.0f + (e.vel.Y / 2.0f);
+					//4=1
+					//0=0
+					ratio = 1.0f-(-e.vel.Y / 4.0f);
                 }
                 else if (e.vel.Y > 0)
                 {
                     anim.currentPose = anim.poseList["jumpup3"];
                     anim.nextPose = anim.poseList["jumpup4"];
-                    ratio = e.vel.Y / 4.0f;
+                    ratio = e.vel.Y / 8.0f;
                 }
                 if (ratio < 0)
                     ratio = 0;
@@ -526,14 +544,15 @@ namespace Virulent.World.States
                 anim.DoTweenPose(e, ratio);
             }
 
+			//float ratio2 = 0;
             if (editingPose)
             {
-                /*
+                ///*
                 anim.currentPose.ImitateEditorPose();
                 Pose.SetEditorPosePosSize(e.pos, new Vector2(100, 100));
                 anim.DoPose(e);
-                */
-                ///*
+                //*/
+                /*
                 if (ratio2 > 2.0f)
                 {
                     anim.currentPose = anim.poseList["jumpup3"];
@@ -555,7 +574,7 @@ namespace Virulent.World.States
                 ratio2 += 0.1f;
                 if (ratio2 > 3)
                     ratio2 = 0;
-                //*/
+                */
             }
             if (e.vel.X > 0.1f)
                 facingLeft = false;
@@ -566,7 +585,7 @@ namespace Virulent.World.States
 
         public override void DrawPoly(Entity e, GraphicsManager graphMan, GameTime gameTime)
         {
-            collider.Draw(graphMan);
+            //collider.Draw(graphMan);
 			//need to find a proper place for camera positioning
             Camera c = graphMan.GetCamera(0);
             c.scale = 1.2f - ((e.pos - c.pos).Length() * 0.001f);
