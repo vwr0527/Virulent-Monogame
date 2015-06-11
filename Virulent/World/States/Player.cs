@@ -515,13 +515,10 @@ namespace Virulent.World.States
                 if (e.vel.Y <= -4)
                 {
                     anim.currentPose = anim.poseList["jumpup1"];
-                    anim.nextPose = anim.poseList["jumpup2"];
-					ratio = 1.0f-((-e.vel.Y/4.0f) - 1.0f);
-					/*
-
-8=1
-4=0
-					 * */
+					anim.nextPose = anim.poseList["jumpup2"];
+					//8=1
+					//4=0
+					ratio = 1.0f - ((-e.vel.Y - 4.0f) / 4.0f);
                 }
                 else if (e.vel.Y <= 0)
                 {

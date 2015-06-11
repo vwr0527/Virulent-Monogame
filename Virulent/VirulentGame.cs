@@ -123,6 +123,7 @@ namespace Virulent
             else
             {
                 world.Draw(gameTime, graphics);
+				input.RecieveWorldMouseInfo (graphics.GetCamera (0), graphics.GetViewSize(0));
                 if (menu.IsActive())
                     menu.Draw(gameTime, graphics);
             }

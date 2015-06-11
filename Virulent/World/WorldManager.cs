@@ -80,6 +80,8 @@ namespace Virulent.World
             {
                 LoadLevel(currentLevel.GetNextLevel());
             }
+
+			mousePos = inputMan.GetWorldMousePos ();
         }
 
         public void LoadLevel(String levelName)
@@ -94,9 +96,13 @@ namespace Virulent.World
             }
         }
 
+		Vector2 mousePos = new Vector2();
+
         public void Draw(GameTime gameTime, GraphicsManager graphMan)
         {
-            //Collider.DoTest(graphMan);
+			//Collider.DoTest(graphMan);
+			graphMan.AddLine((-10 + mousePos.X),-10 + mousePos.Y,Color.White,10 + mousePos.X,10 + mousePos.Y,Color.Blue);
+			graphMan.AddLine((10 + mousePos.X),-10 + mousePos.Y,Color.Red,-10 + mousePos.X,10 + mousePos.Y,Color.Green);
             currentLevel.Draw(gameTime, graphMan);
             entMan.Draw(gameTime, graphMan);
             blockMan.Draw(gameTime, graphMan);

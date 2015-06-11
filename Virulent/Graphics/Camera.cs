@@ -14,7 +14,6 @@ namespace Virulent.Graphics
         public Vector2 pos = new Vector2();
         public float scale = 1;
 
-        int asdf = 0;
         public void CalcMatrix(Viewport view)
         {
             int viewwidth = view.Width / 2;
@@ -29,8 +28,6 @@ namespace Virulent.Graphics
             Matrix.CreateTranslation(-pos.X, -pos.Y, 0) *
             Matrix.CreateTranslation(viewwidth / scale, viewheight / scale, 0);
              * */
-            //asdf++;
-            if (asdf > 100) asdf = 0;
             matrix =
             Matrix.CreateTranslation(-pos.X, -pos.Y, 0) *
             Matrix.CreateScale(scale) *

@@ -136,5 +136,10 @@ namespace Virulent.Graphics
         {
             return cam1;
         }
+
+		public Vector2 GetViewSize(int whichView)
+		{
+			return new Vector2 (graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height);
+		}
     }
 }

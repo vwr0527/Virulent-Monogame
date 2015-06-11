@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
+using Virulent.Graphics;
 
 namespace Virulent.Input
 {
@@ -14,6 +15,8 @@ namespace Virulent.Input
         GamePadState previousState;
         KeyboardState currentKeyState;
         KeyboardState previousKeyState;
+		MouseState currentMouseState;
+		MouseState previousMouseState;
 
         public void Update(GameTime gameTime)
         {
@@ -22,6 +25,9 @@ namespace Virulent.Input
 
             previousKeyState = currentKeyState;
             currentKeyState = Keyboard.GetState(PlayerIndex.One);
+
+			previousMouseState = currentMouseState;
+			currentMouseState = Mouse.GetState ();
         }
 
         public bool IsBackPressed()
@@ -122,5 +128,18 @@ namespace Virulent.Input
         {
             return currentKeyState.IsKeyDown(Keys.S);
         }
+		private Camera cam;
+		private Vector2 viewSize;
+		public void RecieveWorldMouseInfo(Camera c, Vector2 viewportSize)
+		{
+			cam = c;
+			viewSize = viewportSize;
+		}
+		public Vector2 GetWorldMousePos()
+		{
+			Vector2 initial = new Vector2 (currentMouseState.Position.X, currentMouseState.Position.Y);
+			Vector2 result = cam.pos + initial - (viewSize / 2);
+			return result;
+		}
     }
 }
