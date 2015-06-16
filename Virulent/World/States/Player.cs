@@ -22,7 +22,7 @@ namespace Virulent.World.States
 
         private Animator anim;
         private bool inputEnable;
-        private const bool editingPose = false;
+        private const bool editingPose = true;
 
         public Player()
         {
@@ -215,7 +215,7 @@ namespace Virulent.World.States
             if (editingPose)
 			{
 				Pose.ActivateEditor();
-				Pose.SelectPoseToEdit(anim.poseList["jumpup4"]);
+				Pose.SelectPoseToEdit(anim.poseList["standing"]);
             }
         }
 
@@ -235,7 +235,7 @@ namespace Virulent.World.States
 
         public override void UpdateEntity(Entity e, GameTime gameTime, InputManager inputMan)
         {
-            Pose.RunEditor(inputMan);
+			Pose.RunEditor(inputMan, e.pos);
 
             e.vel.X += 0.0001f * (float)(rand.NextDouble() - 0.5) * (float)(gameTime.ElapsedGameTime.Milliseconds);
             e.vel.Y += 0.01f * (float)(gameTime.ElapsedGameTime.Milliseconds);

@@ -264,7 +264,7 @@ namespace Virulent.World.States.Animations
 				offset.Y + pose_pos.Y - (pose_box.Y / 16), col);
 		}
 
-		public static void RunEditor(InputManager input)
+		public static void RunEditor(InputManager input, Vector2 offset)
 		{
 			//Debug.WriteLine("RunEditor running: " + editor_pose_loaded + " " + editor_part_selected + " " + editor_option_selected);
 			if (!editor_active) return;
@@ -272,6 +272,25 @@ namespace Virulent.World.States.Animations
 			//if a pose is selected, arrow key means change current selected part
 			if (editor_pose_loaded && !editor_part_selected)
 			{
+				for (int i = 0; i < selectedPose.sprites.Count; ++i) {
+					Vector2 partpos = selectedPose.sprites [i].pos + offset;
+					float startx = partpos.X - 5;
+					float starty = partpos.Y - 5;
+					float endx = partpos.X + 5;
+					float endy = partpos.Y + 5;
+					Vector2 mpos = input.GetWorldMousePos ();
+					if (mpos.X > startx && mpos.X < endx)
+					{
+						if (mpos.Y > starty && mpos.Y < endy)
+						{
+							editor_current_part_index = i;
+							if(input.MouseLB() == 1)
+							{
+								editor_part_selected = true;
+							}
+						}
+					}
+				}
 				if (input.DownPressed())
 				{
 					++editor_current_part_index;
@@ -295,147 +314,298 @@ namespace Virulent.World.States.Animations
 				}
 				//if (input.BackspacePressed()) editor_pose_loaded = false;
 			}
-			else
-				if (editor_pose_loaded && editor_part_selected && !editor_option_selected)
+			else if (editor_pose_loaded && editor_part_selected && !editor_option_selected)
+			{
+				Vector2 partpos = selectedPose.sprites[editor_current_part_index].pos + offset;
+				Vector2 mpos = input.GetWorldMousePos ();
+				Vector2 sqrsize = pose_box / 8;
+				//Stretching nodes
+				//left edge
+				Vector2 start = partpos + new Vector2(-sqrsize.X, -sqrsize.Y / 2);
+				Vector2 end = partpos + new Vector2(-sqrsize.X / 2, sqrsize.Y / 2);
+				if (mpos.X > start.X  && mpos.X < end.X)
 				{
-					if (input.DownPressed())
+					if (mpos.Y > start.Y && mpos.Y < end.Y)
 					{
-						++selectedOption;
-						if (selectedOption > num_part_options)
+						selectedOption = 2;
+						if(input.MouseLB() == 1)
 						{
-							selectedOption = 0;
+							editor_option_selected = true;
 						}
 					}
-					if (input.UpPressed())
-					{
-						--selectedOption;
-						if (selectedOption < 0)
-						{
-							selectedOption = num_part_options;
-						}
-					}
-					if (input.EnterPressed())
-					{
-						editor_option_selected = true;
-					}
-					if (input.BackspacePressed()) editor_part_selected = false;
 				}
-				else
-					if (editor_pose_loaded && editor_part_selected && editor_option_selected)
+				//right edge
+				start = partpos + new Vector2(sqrsize.X / 2, -sqrsize.Y / 2);
+				end = partpos + new Vector2(sqrsize.X, sqrsize.Y / 2);
+				if (mpos.X > start.X  && mpos.X < end.X)
+				{
+					if (mpos.Y > start.Y && mpos.Y < end.Y)
 					{
-						if ((!input.IsUpPressed()) && (!input.IsDownPressed()) && (!input.IsLeftPressed()) && (!input.IsRightPressed())) editor_option_adjust_speed = 0.0f;
-						else
-							switch (selectedOption)
+						selectedOption = 2;
+						if(input.MouseLB() == 1)
 						{
-							default:
-							case 0:
-								if (input.IsLeftPressed())
-								{
-									selectedPart.pos.X -= editor_option_adjust_speed;
-									editor_option_adjust_speed += 0.1f;
-								}
-								if (input.IsRightPressed())
-								{
-									selectedPart.pos.X += editor_option_adjust_speed;
-									editor_option_adjust_speed += 0.1f;
-								}
-								if (input.IsDownPressed())
-								{
-									selectedPart.pos.Y += editor_option_adjust_speed;
-									editor_option_adjust_speed += 0.1f;
-								}
-								if (input.IsUpPressed())
-								{
-									selectedPart.pos.Y -= editor_option_adjust_speed;
-									editor_option_adjust_speed += 0.1f;
-								}
-								break;
-							case 1:
-								if (input.IsDownPressed() || input.IsRightPressed())
-								{
-									selectedPart.rot += editor_option_adjust_speed;
-									editor_option_adjust_speed += 0.01f;
-								}
-								if (input.IsUpPressed() || input.IsLeftPressed())
-								{
-									selectedPart.rot -= editor_option_adjust_speed;
-									editor_option_adjust_speed += 0.01f;
-								}
-								break;
-							case 2:
-								if (input.IsRightPressed())
-								{
-									selectedPart.scale.X += editor_option_adjust_speed;
-									editor_option_adjust_speed += 0.01f;
-								}
-								if (input.IsLeftPressed())
-								{
-									selectedPart.scale.X -= editor_option_adjust_speed;
-									editor_option_adjust_speed += 0.01f;
-								}
-								if (input.IsDownPressed())
-								{
-									selectedPart.scale.Y += editor_option_adjust_speed;
-									editor_option_adjust_speed += 0.01f;
-								}
-								if (input.IsUpPressed())
-								{
-									selectedPart.scale.Y -= editor_option_adjust_speed;
-									editor_option_adjust_speed += 0.01f;
-								}
-								break;
-							case 3:
-								if (input.IsDownPressed() || input.IsRightPressed())
-								{
-									selectedPart.col.R += 1;
-								}
-								if (input.IsUpPressed() || input.IsLeftPressed())
-								{
-									selectedPart.col.R -= 1;
-								}
-								break;
-							case 4:
-								if (input.IsDownPressed() || input.IsRightPressed())
-								{
-									selectedPart.col.G += 1;
-								}
-								if (input.IsUpPressed() || input.IsLeftPressed())
-								{
-									selectedPart.col.G -= 1;
-								}
-								break;
-							case 5:
-								if (input.IsDownPressed() || input.IsRightPressed())
-								{
-									selectedPart.col.B += 1;
-								}
-								if (input.IsUpPressed() || input.IsLeftPressed())
-								{
-									selectedPart.col.B -= 1;
-								}
-								break;
-						}
-						selectedPose.sprites[editor_current_part_index] = selectedPart;
-						if (input.BackspacePressed()) editor_option_selected = false;
-						if (input.EnterPressed())
-                        {
-                            System.Console.WriteLine("anim.CreatePose(  );");
-
-							for (int i = 0; i < selectedPose.sprites.Count; ++i)
-							{
-								System.Console.WriteLine("anim.AddSpriteInfo(" + selectedPose.sprites[i].pos.X
-									+ "f," + selectedPose.sprites[i].pos.Y
-									+ "f," + selectedPose.sprites[i].scale.X
-									+ "f," + selectedPose.sprites[i].scale.Y
-									+ "f," + selectedPose.sprites[i].rot
-									+ "f," + selectedPose.sprites[i].col.R
-									+ "f," + selectedPose.sprites[i].col.G
-									+ "f," + selectedPose.sprites[i].col.B
-									+ "f);");
-							}
-							//anim.AddSpriteInfo(-2f, -15f, 0.5f, 0, 0, 1f, 1f);//head
+							editor_option_selected = true;
 						}
 					}
+				}
+				//top edge
+				start = partpos + new Vector2(-sqrsize.X / 2, -sqrsize.Y);
+				end = partpos + new Vector2(sqrsize.X / 2, -sqrsize.Y / 2);
+				if (mpos.X > start.X  && mpos.X < end.X)
+				{
+					if (mpos.Y > start.Y && mpos.Y < end.Y)
+					{
+						selectedOption = 2;
+						if(input.MouseLB() == 1)
+						{
+							editor_option_selected = true;
+						}
+					}
+				}
+				//bottom edge
+				start = partpos + new Vector2(-sqrsize.X / 2, sqrsize.Y / 2);
+				end = partpos + new Vector2(sqrsize.X / 2, sqrsize.Y);
+				if (mpos.X > start.X  && mpos.X < end.X)
+				{
+					if (mpos.Y > start.Y && mpos.Y < end.Y)
+					{
+						selectedOption = 2;
+						if(input.MouseLB() == 1)
+						{
+							editor_option_selected = true;
+						}
+					}
+				}
+				//translation node
+				start = partpos + (-sqrsize/2);
+				end = partpos + (sqrsize / 2);
+				if (mpos.X > start.X  && mpos.X < end.X)
+				{
+					if (mpos.Y > start.Y && mpos.Y < end.Y)
+					{
+						selectedOption = 0;
+						if(input.MouseLB() == 1)
+						{
+							editor_option_selected = true;
+						}
+					}
+				}
+				//rotation nodes
+				//top left corner
+				start = partpos + (-sqrsize/2) - new Vector2(2,2);
+				end = partpos + (-sqrsize/2) + new Vector2(2,2);
+				Console.WriteLine("mpos" + mpos + "\tstart" + start + "\tend"+end);
+				if (mpos.X > start.X  && mpos.X < end.X)
+				{
+					if (mpos.Y > start.Y && mpos.Y < end.Y)
+					{
+						selectedOption = 1;
+						if(input.MouseLB() == 1)
+						{
+							editor_option_selected = true;
+						}
+					}
+				}
+				//top right corner
+				Vector2 corner =  new Vector2(sqrsize.X / 2, -sqrsize.Y / 2);
+				start = partpos + corner - new Vector2(2,2);
+				end = partpos + corner + new Vector2(2,2);
+				if (mpos.X > start.X  && mpos.X < end.X)
+				{
+					if (mpos.Y > start.Y && mpos.Y < end.Y)
+					{
+						selectedOption = 1;
+						if(input.MouseLB() == 1)
+						{
+							editor_option_selected = true;
+						}
+					}
+				}
+				//bottom right corner
+				start = partpos + (sqrsize/2) - new Vector2(2,2);
+				end = partpos + (sqrsize/2) + new Vector2(2,2);
+				if (mpos.X > start.X  && mpos.X < end.X)
+				{
+					if (mpos.Y > start.Y && mpos.Y < end.Y)
+					{
+						selectedOption = 1;
+						if(input.MouseLB() == 1)
+						{
+							editor_option_selected = true;
+						}
+					}
+				}
+				//bottom left corner
+				corner =  new Vector2(-sqrsize.X / 2, sqrsize.Y / 2);
+				start = partpos + corner - new Vector2(2,2);
+				end = partpos + corner + new Vector2(2,2);
+				if (mpos.X > start.X  && mpos.X < end.X)
+				{
+					if (mpos.Y > start.Y && mpos.Y < end.Y)
+					{
+						selectedOption = 1;
+						if(input.MouseLB() == 1)
+						{
+							editor_option_selected = true;
+						}
+					}
+				}
+				/*
+				if (input.DownPressed())
+				{
+					++selectedOption;
+					if (selectedOption > num_part_options)
+					{
+						selectedOption = 0;
+					}
+				}
+				if (input.UpPressed())
+				{
+					--selectedOption;
+					if (selectedOption < 0)
+					{
+						selectedOption = num_part_options;
+					}
+				}
+				if (input.EnterPressed())
+				{
+					editor_option_selected = true;
+				}
+				*/
+				if (input.BackspacePressed() || (input.MouseRB() == 1)) editor_part_selected = false;
+			}
+			else if (editor_pose_loaded && editor_part_selected && editor_option_selected)
+			{
+				/*if ((!input.IsUpPressed()) && (!input.IsDownPressed()) && (!input.IsLeftPressed()) && (!input.IsRightPressed())) editor_option_adjust_speed = 0.0f;
+				else
+					switch (selectedOption)
+				{
+					default:
+					case 0:
+						if (input.IsLeftPressed())
+						{
+							selectedPart.pos.X -= editor_option_adjust_speed;
+							editor_option_adjust_speed += 0.1f;
+						}
+						if (input.IsRightPressed())
+						{
+							selectedPart.pos.X += editor_option_adjust_speed;
+							editor_option_adjust_speed += 0.1f;
+						}
+						if (input.IsDownPressed())
+						{
+							selectedPart.pos.Y += editor_option_adjust_speed;
+							editor_option_adjust_speed += 0.1f;
+						}
+						if (input.IsUpPressed())
+						{
+							selectedPart.pos.Y -= editor_option_adjust_speed;
+							editor_option_adjust_speed += 0.1f;
+						}
+						break;
+					case 1:
+						if (input.IsDownPressed() || input.IsRightPressed())
+						{
+							selectedPart.rot += editor_option_adjust_speed;
+							editor_option_adjust_speed += 0.01f;
+						}
+						if (input.IsUpPressed() || input.IsLeftPressed())
+						{
+							selectedPart.rot -= editor_option_adjust_speed;
+							editor_option_adjust_speed += 0.01f;
+						}
+						break;
+					case 2:
+						if (input.IsRightPressed())
+						{
+							selectedPart.scale.X += editor_option_adjust_speed;
+							editor_option_adjust_speed += 0.01f;
+						}
+						if (input.IsLeftPressed())
+						{
+							selectedPart.scale.X -= editor_option_adjust_speed;
+							editor_option_adjust_speed += 0.01f;
+						}
+						if (input.IsDownPressed())
+						{
+							selectedPart.scale.Y += editor_option_adjust_speed;
+							editor_option_adjust_speed += 0.01f;
+						}
+						if (input.IsUpPressed())
+						{
+							selectedPart.scale.Y -= editor_option_adjust_speed;
+							editor_option_adjust_speed += 0.01f;
+						}
+						break;
+					case 3:
+						if (input.IsDownPressed() || input.IsRightPressed())
+						{
+							selectedPart.col.R += 1;
+						}
+						if (input.IsUpPressed() || input.IsLeftPressed())
+						{
+							selectedPart.col.R -= 1;
+						}
+						break;
+					case 4:
+						if (input.IsDownPressed() || input.IsRightPressed())
+						{
+							selectedPart.col.G += 1;
+						}
+						if (input.IsUpPressed() || input.IsLeftPressed())
+						{
+							selectedPart.col.G -= 1;
+						}
+						break;
+					case 5:
+						if (input.IsDownPressed() || input.IsRightPressed())
+						{
+							selectedPart.col.B += 1;
+						}
+						if (input.IsUpPressed() || input.IsLeftPressed())
+						{
+							selectedPart.col.B -= 1;
+						}
+						break;
+				}
+				*/
+				Vector2 partpos = selectedPose.sprites[editor_current_part_index].pos + offset;
+				Vector2 mpos = input.GetWorldMousePos ();
+				switch(selectedOption)
+				{
+				default:
+				case 0:
+					selectedPart.pos.X += mpos.X - partpos.X;
+					selectedPart.pos.Y += mpos.Y - partpos.Y;
+					break;
+				case 1:
+					selectedPart.rot = (float)Math.Atan2(mpos.Y - partpos.Y, mpos.X - partpos.X);
+					break;
+				case 2:
+					selectedPart.scale.X = (50 + mpos.X - partpos.X) / 100;
+					selectedPart.scale.Y = (50 + mpos.Y - partpos.Y) / 100;
+					break;
+				}
+				selectedPose.sprites[editor_current_part_index] = selectedPart;
+				if (input.BackspacePressed() || (input.MouseRB() == 1)) editor_option_selected = false;
+				if (input.EnterPressed() || (input.MouseLB() == 1))
+                {
+                    System.Console.WriteLine("anim.CreatePose(  );");
+
+					for (int i = 0; i < selectedPose.sprites.Count; ++i)
+					{
+						System.Console.WriteLine("anim.AddSpriteInfo(" + selectedPose.sprites[i].pos.X
+							+ "f," + selectedPose.sprites[i].pos.Y
+							+ "f," + selectedPose.sprites[i].scale.X
+							+ "f," + selectedPose.sprites[i].scale.Y
+							+ "f," + selectedPose.sprites[i].rot
+							+ "f," + selectedPose.sprites[i].col.R
+							+ "f," + selectedPose.sprites[i].col.G
+							+ "f," + selectedPose.sprites[i].col.B
+							+ "f);");
+					}
+				}
+			}
 		}
 
 		/// //////////////////////////////////////////////////////

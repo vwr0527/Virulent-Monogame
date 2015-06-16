@@ -127,7 +127,21 @@ namespace Virulent.Input
         public bool MoveDownPressed()
         {
             return currentKeyState.IsKeyDown(Keys.S);
-        }
+		}
+		public int MouseLB()
+		{
+			int result = 0;
+			if(currentMouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton != ButtonState.Pressed) result = 1;
+			if(currentMouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Pressed) result = 2;
+			return result;
+		}
+		public int MouseRB()
+		{
+			int result = 0;
+			if(currentMouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton != ButtonState.Pressed) result = 1;
+			if(currentMouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Pressed) result = 2;
+			return result;
+		}
 		private Camera cam;
 		private Vector2 viewSize;
 		public void RecieveWorldMouseInfo(Camera c, Vector2 viewportSize)
