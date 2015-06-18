@@ -29,12 +29,12 @@ namespace Virulent.World.Levels
         {
             respawnTime = new TimeSpan(0, 0, 0, 100, 0);
             prevSpawnTime = gameTime.TotalGameTime - respawnTime;
-            numPendingBlocks = 3;
+            numPendingBlocks = 4;
         }
 
         public override void LoadContent(ContentManager content)
         {
-            brick = new Block[3];
+            brick = new Block[4];
             brick[0] = new Block("platforms/platform1");
             brick[0].LoadContent(content);
             brick[0].SetPosition(0, 150);
@@ -47,11 +47,18 @@ namespace Virulent.World.Levels
             brick[1].SetScale(0.4f);
             brick[1].SetColor(new Color(0.0f, 0.5f, 1.0f));
 
-            brick[2] = new Block("platforms/platform1");
-            brick[2].LoadContent(content);
-            brick[2].SetPosition(100, 0);
-            brick[2].SetScale(0.4f);
-            brick[2].SetColor(new Color(1.0f, 0.1f, 1.0f));
+			brick[2] = new Block("platforms/platform1");
+			brick[2].LoadContent(content);
+			brick[2].SetPosition(100, 0);
+			brick[2].SetScale(0.4f);
+			brick[2].SetColor(new Color(1.0f, 0.1f, 1.0f));
+
+			brick[3] = new Block();
+			brick[3].LoadContent(content);
+			brick[3].SetPosition(500, 100);
+			brick[3].SetScale(0.4f);
+			brick[3].MakeTriangle();
+			brick[3].SetColor(new Color(1.0f, 0.1f, 1.0f));
 
             bg = new SpriteElement(content.Load<Texture2D>("gradient"));
             bg.Scale = 5;

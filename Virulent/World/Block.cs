@@ -16,28 +16,51 @@ namespace Virulent.World
     {
         private SpriteElement sprite;
         private string textureName;
-        private Collider collider;
-        public Block(string nameOfTexture)
-        {
-            textureName = nameOfTexture;
-            collider = new Collider();
-            collider.AddVert(-160, -50);
-            collider.AddVert(160, -50);
-            collider.AddVert(160, 50);
-            collider.AddVert(-160, 50);
-        }
+		private Collider collider;
+		public Block()
+		{
+			collider = new Collider();
+			textureName = "";
+		}
+
+		public Block(string nameOfTexture)
+		{
+			textureName = nameOfTexture;
+			collider = new Collider();
+			collider.AddVert(-160, -50);
+			collider.AddVert(160, -50);
+			collider.AddVert(160, 50);
+			collider.AddVert(-160, 50);
+		}
+
+		public void SetVert(int index, float X, float Y)
+		{
+			collider.SetVert(index, X, Y);
+		}
+
+		public void AddVert(float X, float Y)
+		{
+			collider.AddVert(new Vector2(X, Y));
+		}
+
+		public void MakeTriangle()
+		{
+			collider.AddVert(160, -100);
+			collider.AddVert(160, 100);
+			collider.AddVert(-320, 100);
+		}
 
         public void LoadContent(ContentManager content)
         {
-            sprite = new SpriteElement(content.Load<Texture2D>(textureName));
+			if (textureName != "") sprite = new SpriteElement(content.Load<Texture2D>(textureName));
         }
 
         public void Draw(GameTime gameTime, GraphicsManager graphMan)
         {
-            sprite.pos.X = collider.pos.X;
-            sprite.pos.Y = collider.pos.Y;
+			if (sprite != null) sprite.pos.X = collider.pos.X;
+			if (sprite != null) sprite.pos.Y = collider.pos.Y;
 
-            graphMan.DrawWorldSprite(sprite);
+			if (sprite != null) graphMan.DrawWorldSprite(sprite);
             collider.Draw(graphMan);
         }
 
@@ -47,19 +70,19 @@ namespace Virulent.World
         }
         public void SetScale(float scale)
         {
-            sprite.Scale = scale;
+			if (sprite != null) sprite.Scale = scale;
             /*Point oldPos = collider.rect.Center;
             collider.rect.Width = (int)((float)collider.rect.Width * scale);
             collider.rect.Height = (int)((float)collider.rect.Height * scale);
             collider.rect.Location = new Point(oldPos.X - (collider.rect.Width / 2), oldPos.Y - (collider.rect.Height / 2));*/
-            for (int i = 0; i < collider.pts.Count; ++i)
+			for (int i = 0; i < collider.Count(); ++i)
             {
                 collider.pts[i] *= scale;
             }
         }
         public void SetColor(Color col)
         {
-            sprite.col = col;
+			if (sprite != null) sprite.col = col;
         }
 
         public void OnCollide(Entity e)

@@ -13,7 +13,7 @@ namespace Virulent.World.Collision
         public Vector2 ppos;
         public float rot; //rotation
         public float prot; //previous rotation
-        public List<Vector2> pts; //collider points relative to the center point of the entity, unrotated
+        public Vector2[] pts; //collider points relative to the center point of the entity, unrotated
 
         //bounding box
         public float maxx;
@@ -24,9 +24,13 @@ namespace Virulent.World.Collision
         //unit tangent vector
 		public CollisionInfo collisionInfo;
 
+		const int startingSize = 4;
+		int maxsize = startingSize;
+		int length = 0;
+
         public Collider()
         {
-            pts = new List<Vector2>();
+			pts = new Vector2[startingSize];
 			collisionInfo = new CollisionInfo();
 			collisionInfo.collideTime = 1;
         }
@@ -64,7 +68,7 @@ namespace Virulent.World.Collision
         }
         private void collideOneWay(Collider a, Collider b)
         {
-            for (int i = 0; i < a.pts.Count; ++i)
+			for (int i = 0; i < a.Count(); ++i)
             {
                 Vector2 lineStart = a.ppos;
                 lineStart += a.pts[i];
@@ -75,11 +79,11 @@ namespace Virulent.World.Collision
                 lineEnd -= b.pos;
 
                 static_ptHit = i;
-                for (int j = 0; j < b.pts.Count; ++j)
+				for (int j = 0; j < b.Count(); ++j)
                 {
                     Vector2 wallStart = b.pts[j];
                     Vector2 wallEnd;
-                    if (j == b.pts.Count - 1)
+					if (j == b.Count() - 1)
                         wallEnd = b.pts[0];
                     else
                         wallEnd = b.pts[j + 1];
@@ -96,11 +100,11 @@ namespace Virulent.World.Collision
 
         public void Draw(Graphics.GraphicsManager graphMan)
         {
-            for (int i = 0; i < pts.Count; ++i)
+            for (int i = 0; i < length; ++i)
             {
                 Vector2 p1 = pts[i];
                 Vector2 p2;
-                if (i + 1 == pts.Count)
+				if (i + 1 == length)
                     p2 = pts[0];
                 else
                     p2 = pts[i + 1];
@@ -125,14 +129,32 @@ namespace Virulent.World.Collision
 			float t = get_line_intersection(33, 44, 100, 100, 50, -50, 70, 80).collideTime;
             graphMan.AddLine(33f, 44f, Color.Blue, ((100 - 33) * t) + 33f, ((100 - 44) * t) + 44f, Color.Blue);
         }
-
+		public int Count()
+		{
+			return length;
+		}
+		public void SetVert(int index, float x, float y)
+		{
+			if(index >= length) index = length - 1;
+			if(index < 0) index = 0;
+			pts[index].X = x;
+			pts[index].Y = y;
+		}
         public void AddVert(float x, float y)
-        {
-            pts.Add(new Vector2(x, y));
+		{
+			AddVert(new Vector2(x, y));
         }
         public void AddVert(Vector2 p)
-        {
-            pts.Add(p);
+		{
+			pts[length] = p;
+			length += 1;
+			if(length >= maxsize)
+			{
+				maxsize *= 2;
+				Vector2[] newpts = new Vector2[maxsize];
+				pts.CopyTo(newpts, 0);
+				pts = newpts;
+			}
         }
         public void SetLoc(float x, float y)
         {

@@ -22,7 +22,7 @@ namespace Virulent.World.States
 
         private Animator anim;
         private bool inputEnable;
-        private const bool editingPose = true;
+        private const bool editingPose = false;
 
         public Player()
         {
