@@ -3,26 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 using System.Text;
-using Microsoft.Xna.Framework.Storage;
-using Microsoft.Xna.Framework;
+//using Microsoft.Xna.Framework.Storage;using Microsoft.Xna.Framework;
 using System.IO;
 
 namespace Virulent.Storage
 {
     class StorageManager
     {
-        StorageDevice m_device;
+//        StorageDevice m_device;
         IAsyncResult m_result;
         bool gameSaveRequested = false;
 
-        public StorageManager(StorageDevice deviceParam)
+/*		public StorageManager()//StorageDevice deviceParam)
         {
             m_device = deviceParam;
         }
-
+*/
         public StorageManager()
         {
-            m_device = null;
+//            m_device = null;
         }
 
         public void DoSaveRequest(bool guideIsVisible, PlayerIndex whichPlayer)
@@ -31,8 +30,7 @@ namespace Virulent.Storage
             if ((!guideIsVisible) && (gameSaveRequested == false))
             {
                 gameSaveRequested = true;
-                m_result = StorageDevice.BeginShowSelector(
-                        whichPlayer, null, null);
+                //m_result = StorageDevice.BeginShowSelector(whichPlayer, null, null);
             }
         }
 
@@ -40,18 +38,18 @@ namespace Virulent.Storage
         {
             if ((gameSaveRequested) && (m_result.IsCompleted))
             {
-                m_device = StorageDevice.EndShowSelector(m_result);
+                /*m_device = StorageDevice.EndShowSelector(m_result);
                 if (m_device != null && m_device.IsConnected)
                 {
                     //this is where the saving actually happens.
                     MessWithFiles();
                 }
-                // Reset the request flag
+                // Reset the request flag*/
                 gameSaveRequested = false;
             }
         }
 
-        private void MessWithFiles()
+        /*private void MessWithFiles()
         {
 
             // Open a storage container.
@@ -77,6 +75,6 @@ namespace Virulent.Storage
             }
             // Dispose the container, to commit the data.
             container.Dispose();
-        }
+        }*/
     }
 }

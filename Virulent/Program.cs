@@ -17,7 +17,7 @@ namespace Virulent
     [STAThread]
     static void Main()
       {
-        game = new VirulentGame();
+        game = new VirulentGame ();
         game.Run();
       }
   }

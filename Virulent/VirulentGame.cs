@@ -5,10 +5,10 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
+//using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Storage;
+//using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Media;
 
 using Virulent.Menu;
@@ -32,7 +32,7 @@ namespace Virulent
         public VirulentGame()
         {
             Content.RootDirectory = "Content";
-            Components.Add(new GamerServicesComponent(this));
+            //Components.Add(new GamerServicesComponent(this));
 
             storage = new StorageManager();
             graphics = new GraphicsManager(new GraphicsDeviceManager(this));
@@ -104,7 +104,7 @@ namespace Virulent
 
             if (menu.SaveGame() || world.SaveGame())
             {
-                storage.DoSaveRequest(Guide.IsVisible, PlayerIndex.One);
+                storage.DoSaveRequest(/*Guide.IsVisible*/ false, PlayerIndex.One);
             }
 
             storage.DoPendingSave();

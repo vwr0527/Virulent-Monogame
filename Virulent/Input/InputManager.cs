@@ -28,17 +28,22 @@ namespace Virulent.Input
 
 			previousMouseState = currentMouseState;
 			currentMouseState = Mouse.GetState ();
+
         }
 
         public bool IsBackPressed()
         {
-            return currentState.Buttons.Back == ButtonState.Pressed;
+			bool result = currentState.Buttons.Back == ButtonState.Pressed;
+
+			return result;
         }
 
         public bool APressed()
         {
-            return previousState.Buttons.A == ButtonState.Released
+			bool result =  previousState.Buttons.A == ButtonState.Released
                 && currentState.Buttons.A == ButtonState.Pressed;
+
+			return result;
         }
 
         public bool StartPressed()

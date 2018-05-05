@@ -7,3 +7,9 @@ C:\Users\Victor\Documents\Projects\Virulent\Virulent\bin\Release\Lidgren.Network
 C:\Users\Victor\Documents\Projects\Virulent\Virulent\obj\x86\Release\Virulent.csprojResolveAssemblyReference.cache
 C:\Users\Victor\Documents\Projects\Virulent\Virulent\obj\x86\Release\Virulent.exe
 C:\Users\Victor\Documents\Projects\Virulent\Virulent\obj\x86\Release\Virulent.pdb
+C:\Users\Victor\Documents\Projects\Virulent\Virulent\bin\Release\mscorlib.dll
+C:\Users\Victor\Documents\Projects\Virulent\Virulent\bin\Release\normidna.nlp
+C:\Users\Victor\Documents\Projects\Virulent\Virulent\bin\Release\normnfc.nlp
+C:\Users\Victor\Documents\Projects\Virulent\Virulent\bin\Release\normnfd.nlp
+C:\Users\Victor\Documents\Projects\Virulent\Virulent\bin\Release\normnfkc.nlp
+C:\Users\Victor\Documents\Projects\Virulent\Virulent\bin\Release\normnfkd.nlp

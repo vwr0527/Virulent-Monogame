@@ -268,7 +268,7 @@ namespace Virulent.World.States
                     }
                     e.vel.X += 0.005f * (float)(gameTime.ElapsedGameTime.Milliseconds);
                 }
-                if (inputMan.MoveUpPressed())
+                if (inputMan.MoveUpPressed() && bottom_touching == 0)
                 {
                     e.vel.Y -= 0.002f * (float)(gameTime.ElapsedGameTime.Milliseconds);
                 }
@@ -296,7 +296,7 @@ namespace Virulent.World.States
                         jumpAngle = 0;
                     }
 
-                    float jumpStrength = ((float)jumpHeld + 2.0f) / 5.0f;
+                    float jumpStrength = ((float)jumpHeld) / 4.0f;
 
                     if (bottom_left_touching == 1 || bottom_right_touching == 1)
                     {
